@@ -115,3 +115,8 @@ Issue 1. UID 생성 중 Sequence 일정 자릿수 및 문자열 포함 생성 �
 
 Issue 2. POST_LIST - POST_ID Forign Key 참조 관련 이슈 발생.
 * 해결과정 ) [Issue#2](https://github.com/SulHyunRyung/INSIDE/issues/2)
+
+Process Organization
+* 프로젝트 Git Setting
+* SRS 구성 및 세부사항 조정
+* 각 기능 테이블 구성
