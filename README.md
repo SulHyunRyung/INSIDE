@@ -99,3 +99,6 @@ InSide
 
 웹 구조가 아닌 이상 Session 방식 사용에 난항이 있다고 판단 및 개선 필요성 확인.
 ㄴ파일기반 or 메모리기반 세션 저장 방식으로 해결 예정.
+
+Issue 1. UID 생성 중 Sequence 일정 자릿수 및 문자열 포함 생성 관련 에러 발생.
+* 해결과정 ) https://github.com/SulHyunRyung/TIL/issues/1
