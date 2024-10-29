@@ -1,4 +1,6 @@
-- 메신저형 SNS (Untitled)
+InSide
+
+- 메신저형 SNS
 
 [1]. 회원 관리
 
