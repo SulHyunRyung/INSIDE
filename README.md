@@ -14,7 +14,9 @@ TABLE NAME = MEMBER_LIST
 * USER_EMAIL (VARCHAR2(50), NOT NULL, UNIQUE)
 
 ▶ ID, EMAIL 중복 확인을 위한 유효성 검사 필요.
+
 ▶ ID 영,숫자만 사용 가능하도록 정규식 제한
+
 ▶ PW 암호화를 위한 토큰 발급 필요
 
 [1]-2. Log IN/OUT
