@@ -118,5 +118,6 @@ Issue 2. POST_LIST - POST_ID Forign Key 참조 관련 이슈 발생.
 
 Process Organization
 * 프로젝트 Git Setting
+* Logo 제작
 * SRS 구성 및 세부사항 조정
 * 각 기능 테이블 구성
