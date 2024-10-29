@@ -1,4 +1,4 @@
-#InSide
+#INSIDE
 
 - 메신저형 SNS
 
