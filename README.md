@@ -126,3 +126,17 @@ Process Organization
 * Logo 제작
 * SRS 구성 및 세부사항 조정
 * 각 기능 테이블 구성
+
+24.10.30
+
+* 1. 전체 구조 형성 및 UI 스케치
+* 2. 모델 패키지 생성 및 세부사항 조정
+* 3. 쿼리 및 소스 확보
+
+![Sketch](https://github.com/user-attachments/assets/d0ea8ddf-5b9d-4740-bb20-af45e9c5d05b)
+
+/referance/img/sketch.png
+ 
+![Structure_Model](https://github.com/user-attachments/assets/fb0cd06d-b049-4256-8061-aa428a7d7dcb)
+
+/referance/img/Structure_Model.png
