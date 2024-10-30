@@ -39,6 +39,7 @@ TABLE NAME = POST_LIST
 * CREATE_DATE (DATE DEFAULT SYSDATE)
 
 ▶ 게시글 내용 유무 유효성 검사 필요
+
 ▶ 게시글 내용 최대 한도제한 +@ [이미지 업로드]
 
 [2]-2. 게시글 조회
@@ -70,6 +71,7 @@ TABLE NAME = COMMENT_LIST
 [3]-2. 댓글 조회
 
 ▶ 게시글에 업로드된 순서로 조회 가능
+
 ▶ n개 이상 페이징?
 
 [3]-3. 댓글 삭제
