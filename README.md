@@ -133,7 +133,10 @@ Process Organization
 * 2. 모델 패키지 생성 및 세부사항 조정
 * 3. 쿼리 및 소스 확보
 
- ![Sketch](https://github.com/user-attachments/assets/1c3fef21-16dc-475f-9832-d2027512fc58)
+![Sketch](https://github.com/user-attachments/assets/b7c1a639-6613-4de9-933c-8fc4e4f9d5fb)
+
+/referance/img/sketch.png
  
 ![Structure_Model](https://github.com/user-attachments/assets/fb0cd06d-b049-4256-8061-aa428a7d7dcb)
 
+/referance/img/Structure_Model.png
