@@ -1,0 +1,45 @@
+package dao;
+
+import java.sql.Connection;
+
+import model.Member;
+
+public class MemberDAOImple implements MemberDAO {
+
+	@Override
+	public boolean insertMember(Member member) {
+		String sqlInsert = "INSERT INTO MEMBER_LIST (UID, USER_NAME, USER_ID, USER_PW, USER_EMAIL) VALUES (MEMBER_SEQ.NEXTVAL, ?, ?, ?, ?)";
+		
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
+
+               pstmt.setString(1, member.getUid());
+               pstmt.setString(2, member.getUserName());
+               pstmt.setString(3, member.getUserId());
+               pstmt.setString(4, member.getUserPw());
+               pstmt.setString(5, member.getUserEmail());
+               
+               int rowsInserted = pstmt.executeUpdate();
+               return rowsInserted > 0;  // 삽입 성공 시 true 반환
+
+           } catch (SQLException e) {
+               System.out.println("Error in insertMember: " + e.getMessage());
+               e.printStackTrace();
+               return false;  // 에러 발생 시 false 반환
+           }
+		return false;
+	}
+
+	@Override
+	public boolean updateMember(Member member) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteMember(String userId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

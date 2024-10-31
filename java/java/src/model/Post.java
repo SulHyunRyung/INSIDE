@@ -3,15 +3,15 @@ package model;
 import java.util.Date;
 
 public class Post {
-	private int postId;
+	private String postId;
 	private String pUserId;
-	private int postTitle;
-	private int contents;
+	private String postTitle;
+	private String contents;
 	private Date createDate;
 	
 	public Post() {}
 
-	public Post(int postId, String pUserId, int postTitle, int contents, Date createDate) {
+	public Post(String postId, String pUserId, String postTitle, String contents, Date createDate) {
 		super();
 		this.postId = postId;
 		this.pUserId = pUserId;
@@ -20,11 +20,11 @@ public class Post {
 		this.createDate = createDate;
 	}
 
-	public int getPostId() {
+	public String getPostId() {
 		return postId;
 	}
 
-	public void setPostId(int postId) {
+	public void setPostId(String postId) {
 		this.postId = postId;
 	}
 
@@ -36,19 +36,19 @@ public class Post {
 		this.pUserId = pUserId;
 	}
 
-	public int getPostTitle() {
+	public String getPostTitle() {
 		return postTitle;
 	}
 
-	public void setPostTitle(int postTitle) {
+	public void setPostTitle(String postTitle) {
 		this.postTitle = postTitle;
 	}
 
-	public int getContents() {
+	public String getContents() {
 		return contents;
 	}
 
-	public void setContents(int contents) {
+	public void setContents(String contents) {
 		this.contents = contents;
 	}
 

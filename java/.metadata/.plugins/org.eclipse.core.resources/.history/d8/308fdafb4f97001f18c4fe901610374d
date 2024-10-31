@@ -1,0 +1,73 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import model.Member;
+import util.DBconn;
+import util.OracleQuery;
+
+public class MemberDAOImple implements MemberDAO {
+
+	@Override
+	public boolean insertMember(Member member) {
+		String sqlInsert = "INSERT INTO " + 
+				OracleQuery.MEMBER_TABLE + " (" + 
+				OracleQuery.COL_UID + ", " +
+				OracleQuery.COL_USER_NAME + ", " +
+				OracleQuery.COL_USER_ID + ", " +
+				OracleQuery.COL_USER_PW + ", " +
+				OracleQuery.COL_USER_EMAIL + 
+				") VALUSE (MEMBER_SEQ.NEXTVAL, ?, ?, ?, ?)";
+				
+		try (Connection conn = DBconn.connectDB(); PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
+			pstmt.setString(1, member.getUserName());
+			pstmt.setString(2, member.getUserId());
+			pstmt.setString(3, member.getUserPw());
+			pstmt.setString(4, member.getUserEmail());
+
+			int pstmtResult = pstmt.executeUpdate();
+			return pstmtResult > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	} // End inserMember
+
+    @Override
+    public boolean updateMember(Member member) { 
+        String sqlUpdate = "UPDATE " +
+                OracleQuery.MEMBER_TABLE + " SET " +
+                OracleQuery.COL_USER_NAME + " = ?, " +
+                OracleQuery.COL_USER_PW + " = ?, " +
+                OracleQuery.COL_USER_EMAIL + " = ?, " +
+                OracleQuery.COL_INFO_UPDATE_DATE + " = SYSDATE WHERE " +
+                OracleQuery.COL_UID + " = ?";
+        		
+       //"UPDATE MEMBER_LIST SET USER_NAME = ?, USER_PW = ?, USER_EMAIL = ? WHERE UID = ?";
+        
+        try (Connection conn = DBconn.connectDB();
+             PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)) {
+
+            pstmt.setString(1, member.getUserName());
+            pstmt.setString(2, member.getUserPw());
+            pstmt.setString(3, member.getUserEmail());
+            pstmt.setString(4, member.getUid());
+
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0; 
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    } // End updateMember
+
+	@Override
+	public boolean deleteMember(String userId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}
