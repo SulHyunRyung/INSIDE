@@ -148,8 +148,5 @@ PW 암호와 토큰 발급 확인
 * 기능 구현을 위한 DAO 및 DAOImpl 의 메서드 작성
 * 사용되는 테이블의 유효성 체크 후 구조 변경
 
-![transaction2](https://github.com/user-attachments/assets/91bd94ec-74a5-4494-ba4a-cf4a2e380dc1)
-
-![transaction1](https://github.com/user-attachments/assets/a76e193f-62ef-46bb-b0df-fbb5aa7f88f3)
-
-각 기능 구현 메서드에 트랜잭션 처리로 동시 다발성의 문제를 최소화 시도.
+2. 기능 메서드의 트랜잭션 처리* 해결과정 )
+3. [Issue#3](https://github.com/SulHyunRyung/INSIDE/issues/3)
