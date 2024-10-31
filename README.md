@@ -110,25 +110,26 @@ PW 암호와 토큰 발급 확인
 
 =======================================
 
-24.10.29
+# 24.10.29
 
 웹 구조가 아닌 이상 Session 방식 사용에 난항이 있다고 판단 및 개선 필요성 확인.
 * 파일기반 or 메모리기반 세션 저장 방식으로 해결 예정.
 
-Issue 1. UID 생성 중 Sequence 일정 자릿수 및 문자열 포함 생성 관련 에러 발생.
+## Issue 1. UID 생성 중 Sequence 일정 자릿수 및 문자열 포함 생성 관련 에러 발생.
 * 해결과정 ) [Issue#1](https://github.com/SulHyunRyung/INSIDE/issues/1)
 
-Issue 2. POST_LIST - POST_ID Forign Key 참조 관련 이슈 발생.
+## Issue 2. POST_LIST - POST_ID Forign Key 참조 관련 이슈 발생.
 * 해결과정 ) [Issue#2](https://github.com/SulHyunRyung/INSIDE/issues/2)
 
-Process Organization
+## Daily Report
 * 프로젝트 Git Setting
 * Logo 제작
 * SRS 구성 및 세부사항 조정
 * 각 기능 테이블 구성
 
-24.10.30
+# 24.10.30
 
+## Daily Report
 * 전체 구조 형성 및 UI 스케치
 * 모델 패키지 생성 및 세부사항 조정
 * 필요 소스 및 쿼리 확보, 레퍼런스 서치
@@ -140,3 +141,15 @@ Process Organization
 ![Structure_Model](https://github.com/user-attachments/assets/fb0cd06d-b049-4256-8061-aa428a7d7dcb)
 
 /referance/img/Structure_Model.png
+
+# 24. 10. 31
+
+## Daily Report
+* 기능 구현을 위한 DAO 및 DAOImpl 의 메서드 작성
+* 사용되는 테이블의 유효성 체크 후 구조 변경
+
+![transaction2](https://github.com/user-attachments/assets/91bd94ec-74a5-4494-ba4a-cf4a2e380dc1)
+
+![transaction1](https://github.com/user-attachments/assets/a76e193f-62ef-46bb-b0df-fbb5aa7f88f3)
+
+각 기능 구현 메서드에 트랜잭션 처리로 동시 다발성의 문제를 최소화 시도.
