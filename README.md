@@ -148,5 +148,5 @@ PW 암호와 토큰 발급 확인
 * 기능 구현을 위한 DAO 및 DAOImpl 의 메서드 작성
 * 사용되는 테이블의 유효성 체크 후 구조 변경
 
-2. 기능 메서드의 트랜잭션 처리* 해결과정 )
-3. [Issue#3](https://github.com/SulHyunRyung/INSIDE/issues/3)
+## 2. 기능 메서드의 트랜잭션 처리 해결과정 
+[Issue#3](https://github.com/SulHyunRyung/INSIDE/issues/3)
