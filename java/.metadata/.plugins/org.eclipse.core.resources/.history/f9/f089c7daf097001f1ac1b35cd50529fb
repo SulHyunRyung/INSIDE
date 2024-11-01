@@ -8,19 +8,16 @@ public class Post {
 	private String postTitle;
 	private String contents;
 	private Date createDate;
-	private Date updateDate;
+	
+	public Post() {}
 
-	public Post() {
-	}
-
-	public Post(String postId, String pUserId, String postTitle, String contents, Date createDate, Date updateDate) {
+	public Post(String postId, String pUserId, String postTitle, String contents, Date createDate) {
 		super();
 		this.postId = postId;
 		this.pUserId = pUserId;
 		this.postTitle = postTitle;
 		this.contents = contents;
 		this.createDate = createDate;
-		this.updateDate = updateDate;
 	}
 
 	public String getPostId() {
@@ -63,18 +60,10 @@ public class Post {
 		this.createDate = createDate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-
 	@Override
 	public String toString() {
 		return "Post [postId=" + postId + ", pUserId=" + pUserId + ", postTitle=" + postTitle + ", contents=" + contents
-				+ ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
+				+ ", createDate=" + createDate + "]";
 	}
 
 }
