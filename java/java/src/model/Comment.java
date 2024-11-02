@@ -3,7 +3,7 @@ package model;
 import java.util.Date;
 
 public class Comment {
-	private int commentId;
+	private String commentId;
 	private String cPostId;
 	private String cUserId;
 	private String comment;
@@ -12,7 +12,7 @@ public class Comment {
 	public Comment() {
 	}
 
-	public Comment(int commentId, String cPostId, String cUserId, String comment, Date writeDate) {
+	public Comment(String commentId, String cPostId, String cUserId, String comment, Date writeDate) {
 		super();
 		this.commentId = commentId;
 		this.cPostId = cPostId;
@@ -21,11 +21,11 @@ public class Comment {
 		this.writeDate = writeDate;
 	}
 
-	public int getCommentId() {
+	public String getCommentId() {
 		return commentId;
 	}
 
-	public void setCommentId(int commentId) {
+	public void setCommentId(String commentId) {
 		this.commentId = commentId;
 	}
 
