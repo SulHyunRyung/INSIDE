@@ -1,61 +1,66 @@
 package gui;
 
+import model.Member;
+import util.DBconn;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class LoginFrame extends JFrame {
+    private static final long serialVersionUID = 1L;
+
     public LoginFrame() {
-        // 프레임 기본 설정
         setTitle("로그인 창");
         setSize(300, 150);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);  // 화면 가운데에 창을 배치
+        setLocationRelativeTo(null);
 
-        // 패널 생성
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2));  // 그리드 레이아웃으로 배치
+        panel.setLayout(new GridLayout(3, 2)); 
 
-        // 레이블과 텍스트 필드 추가
         JLabel userLabel = new JLabel("아이디:");
         JTextField userText = new JTextField(20);
         JLabel passwordLabel = new JLabel("비밀번호:");
         JPasswordField passwordText = new JPasswordField(20);
 
-        // 로그인, 회원가입 버튼 추가
         JButton loginButton = new JButton("로그인");
         JButton signupButton = new JButton("회원가입");
 
-        // 로그인 버튼 클릭 시 실행될 액션
         Action loginAction = new AbstractAction() {
+            private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = userText.getText();
                 String password = new String(passwordText.getPassword());
+                Member member = getMember(username, password);
 
-                if ("admin".equals(username) && "1234".equals(password)) {
-                    JOptionPane.showMessageDialog(null, "로그인 성공!");
+                if (member != null) {
+                    new MainFrame(member); // 회원 정보를 MainFrame에 전달
+                    dispose(); // 로그인 창 닫기
                 } else {
-                    JOptionPane.showMessageDialog(null, "로그인 실패. 다시 시도하세요.");
+                    JOptionPane.showMessageDialog(null, "아이디 혹은 비밀번호를 확인해주세요.");
                 }
             }
         };
 
-        // 엔터 키로 로그인 버튼 클릭 기능 추가
         userText.addActionListener(loginAction);
         passwordText.addActionListener(loginAction);
-        loginButton.addActionListener(loginAction);  // 버튼 클릭 시 같은 액션 실행
+        loginButton.addActionListener(loginAction);
 
-        // 회원가입 버튼 클릭 시 회원가입 창 열기
         signupButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new RegFrame(); // 회원가입 창 열기
+                new RegFrame();
             }
         });
 
-        // 패널에 컴포넌트 추가
         panel.add(userLabel);
         panel.add(userText);
         panel.add(passwordLabel);
@@ -63,12 +68,35 @@ public class LoginFrame extends JFrame {
         panel.add(loginButton);
         panel.add(signupButton);
 
-        // 프레임에 패널 추가
         add(panel);
-        setVisible(true);  // 창 표시
+        setVisible(true); 
     }
 
-    public static void main(String[] args) {
-        new LoginFrame();
+    private Member getMember(String username, String password) {
+        String sql = "SELECT * FROM MEMBER_LIST WHERE USER_ID = ? AND USER_PW = ?";
+        
+        try (Connection conn = DBconn.connectDB();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    // 회원 정보를 Member 객체로 생성
+                    return new Member(
+                        rs.getString("UID"),
+                        rs.getString("USER_NAME"),
+                        rs.getString("USER_ID"),
+                        rs.getString("USER_PW"),
+                        rs.getString("USER_EMAIL"),
+                        rs.getDate("REG_DATE")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // 로그인 실패 시 null 반환
     }
 }

@@ -1,0 +1,97 @@
+package gui;
+
+import javax.swing.*;
+import model.Member;
+import util.DBconn;
+import util.OverlapChk;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class RegFrame extends JFrame {
+    private static final long serialVersionUID = 1L;
+
+    public RegFrame() {
+        setTitle("회원가입");
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 2));
+
+        JLabel nameLabel = new JLabel("이름:");
+        JTextField nameField = new JTextField(20);
+        JLabel userIdLabel = new JLabel("아이디:");
+        JTextField userIdField = new JTextField(20);
+        JLabel passwordLabel = new JLabel("비밀번호:");
+        JPasswordField passwordField = new JPasswordField(20);
+        JLabel emailLabel = new JLabel("이메일:");
+        JTextField emailField = new JTextField(20);
+
+        JButton registerButton = new JButton("가입하기");
+
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = nameField.getText();
+                String userId = userIdField.getText();
+                String password = new String(passwordField.getPassword());
+                String email = emailField.getText();
+
+                // 필드 확인
+                if (name.isEmpty() || userId.isEmpty() || password.isEmpty() || email.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "모든 필드를 채워주세요.");
+                    return;
+                }
+
+                // 중복 체크
+                OverlapChk overlapChk = new OverlapChk();
+                if (overlapChk.isUserIdExists(userId)) {
+                    JOptionPane.showMessageDialog(null, "이미 존재하는 아이디입니다.");
+                    return;
+                }
+
+                if (overlapChk.isUserEmailExists(email)) {
+                    JOptionPane.showMessageDialog(null, "이미 존재하는 이메일입니다.");
+                    return;
+                }
+
+                // Member 객체 생성 및 삽입
+                Member member = new Member();
+                member.setUserName(name);
+                member.setUserId(userId);
+                member.setUserPw(password);
+                member.setUserEmail(email);
+
+                // DB에 회원 정보 삽입
+                if (insertMember(member)) {
+                    JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
+                    dispose(); // 창 닫기
+                } else {
+                    JOptionPane.showMessageDialog(null, "회원가입에 실패했습니다.");
+                }
+            }
+        });
+
+        panel.add(nameLabel);
+        panel.add(nameField);
+        panel.add(userIdLabel);
+        panel.add(userIdField);
+        panel.add(passwordLabel);
+        panel.add(passwordField);
+        panel.add(emailLabel);
+        panel.add(emailField);
+        panel.add(registerButton);
+
+        add(panel);
+        setVisible(true);
+    }
+
+    private boolean insertMember(Member member) {
+        // 여기에 DB 삽입 로직을 추가하십시오. 
+        // insertMember 메서드는 이전에 제공된 메서드와 유사하게 구성할 수 있습니다.
+        // 여기서는 실제 DB 연결 및 삽입 로직을 대체합니다.
+        return true; // 테스트용으로 항상 true 반환
+    }
+}

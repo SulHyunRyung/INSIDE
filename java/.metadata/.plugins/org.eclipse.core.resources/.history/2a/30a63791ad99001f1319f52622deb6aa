@@ -1,0 +1,67 @@
+package gui;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MainFrame extends JFrame {
+    private static final long serialVersionUID = 1L;
+
+    public MainFrame(String memberName) {
+        setTitle("Main Window");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        
+        // 메인 패널 설정
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+
+        // 상단 패널 (로고 및 사용자 이름)
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        
+        JLabel logoLabel = new JLabel(new ImageIcon("Logo.png")); // 로고 이미지
+        JLabel greetingLabel = new JLabel(memberName + "님 안녕하세요.");
+        JButton logoutButton = new JButton("로그아웃");
+        
+        topPanel.add(logoLabel);
+        topPanel.add(greetingLabel);
+        topPanel.add(logoutButton);
+        
+        mainPanel.add(topPanel, BorderLayout.NORTH);
+
+        // 게시판 패널
+        JPanel boardPanel = new JPanel();
+        boardPanel.setLayout(new GridLayout(0, 1)); // 게시물 리스트를 수직으로 나열
+        boardPanel.setBorder(BorderFactory.createTitledBorder("게시판"));
+
+        // 최근 5개 게시물 추가 (예시)
+        for (int i = 1; i <= 5; i++) {
+            boardPanel.add(new JLabel("게시물 " + i)); // 게시물 제목
+        }
+
+        // 게시판 크기 조정
+        boardPanel.setPreferredSize(new Dimension(400, 300)); // 크기를 400x300으로 설정
+
+        // JScrollPane을 사용하여 게시판에 스크롤 기능 추가
+        JScrollPane scrollPane = new JScrollPane(boardPanel);
+        scrollPane.setPreferredSize(new Dimension(400, 300)); // JScrollPane의 크기도 동일하게 설정
+
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        
+        // 친구 목록 버튼 패널
+        JPanel friendPanel = new JPanel();
+        JButton friendListButton = new JButton("친구목록");
+        friendPanel.add(friendListButton);
+        
+        mainPanel.add(friendPanel, BorderLayout.SOUTH);
+
+        // 메인 패널을 JFrame에 추가
+        add(mainPanel);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new MainFrame("(MEMBER_NAME)"); // 회원 이름을 매개변수로 전달
+    }
+}

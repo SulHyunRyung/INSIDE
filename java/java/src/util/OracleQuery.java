@@ -3,7 +3,7 @@ package util;
 public interface OracleQuery {
 	// MEMBER_LIST QUERY
 	public static final String MEMBER_TABLE = "MEMBER_LIST";
-	public static final String COL_UID = "UID";
+	public static final String COL_UID = "\"UID\"";
 	public static final String COL_USER_NAME = "USER_NAME";
 	public static final String COL_USER_ID = "USER_ID";
 	public static final String COL_USER_PW = "USER_PW";

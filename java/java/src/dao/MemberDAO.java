@@ -12,4 +12,9 @@ public interface MemberDAO {
 	
 	// 회원 탈퇴
 	boolean deleteMember(String userId);
+
+	//중복 ID & Email 체크
+	boolean isUserIdExists(String userId);
+
+	boolean isUserEmailExists(String userEmail);
 }

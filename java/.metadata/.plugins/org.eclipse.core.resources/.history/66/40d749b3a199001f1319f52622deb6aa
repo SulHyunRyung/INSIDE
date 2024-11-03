@@ -1,0 +1,78 @@
+package gui;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import model.Member;
+import dao.MemberDAOImpl; 
+
+public class RegFrame extends JFrame {
+    private MemberDAOImpl memberDAO;
+
+    public RegFrame() {
+        setTitle("회원가입 창");
+        setSize(300, 250);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // 패널 생성
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 2)); 
+
+        // 레이블과 텍스트 필드 추가
+        JLabel nameLabel = new JLabel("이름:");
+        JTextField nameText = new JTextField(20);
+        JLabel userIdLabel = new JLabel("아이디:");
+        JTextField userIdText = new JTextField(20);
+        JLabel passwordLabel = new JLabel("비밀번호:");
+        JPasswordField passwordText = new JPasswordField(20);
+        JLabel emailLabel = new JLabel("이메일:");
+        JTextField emailText = new JTextField(20);
+        JButton registerButton = new JButton("가입하기");
+
+        memberDAO = new MemberDAOImpl();
+
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = nameText.getText();
+                String userId = userIdText.getText();
+                String password = new String(passwordText.getPassword());
+                String email = emailText.getText();
+
+                if (!name.isEmpty() && !userId.isEmpty() && !password.isEmpty() && !email.isEmpty()) {
+                    Member member = new Member();
+                    member.setUserName(name);
+                    member.setUserId(userId);
+                    member.setUserPw(password);
+                    member.setUserEmail(email);
+                    
+                    boolean isInserted = memberDAO.insertMember(member);
+                    if (isInserted) {
+                        JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!");
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "회원가입에 실패했습니다. 다시 시도해주세요.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "모든 필드를 입력해 주세요.");
+                }
+            }
+        });
+
+        panel.add(nameLabel);
+        panel.add(nameText);
+        panel.add(userIdLabel);
+        panel.add(userIdText);
+        panel.add(passwordLabel);
+        panel.add(passwordText);
+        panel.add(emailLabel);
+        panel.add(emailText);
+        panel.add(new JLabel()); 
+        panel.add(registerButton);
+
+        add(panel);
+        setVisible(true);
+    }
+}

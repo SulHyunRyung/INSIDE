@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.Member;
 import util.DBconn;
@@ -100,4 +101,42 @@ public class MemberDAOImpl implements MemberDAO {
             return false;
         }
     } // End deleteMember
+    
+    
+    @Override
+    public boolean isUserIdExists(String userId) {
+        String sql = "SELECT COUNT(*) FROM MEMBER_LIST WHERE USER_ID = ?";
+        try (Connection conn = DBconn.connectDB();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             
+            pstmt.setString(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; 
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    } // End isUserIdExists
+
+    @Override
+    public boolean isUserEmailExists(String userEmail) {
+        String sql = "SELECT COUNT(*) FROM MEMBER_LIST WHERE USER_EMAIL = ?";
+        try (Connection conn = DBconn.connectDB();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             
+            pstmt.setString(1, userEmail);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; 
+    } // End isUserEmailExists
 }
+

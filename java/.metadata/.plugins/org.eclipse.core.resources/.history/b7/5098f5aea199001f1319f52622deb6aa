@@ -1,0 +1,85 @@
+package gui;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import model.Member; // Member 클래스 import
+import dao.MemberDAOImpl; // MemberDAOImpl 클래스 import
+
+public class RegFrame extends JFrame {
+    private MemberDAOImpl memberDAO; // DAO 객체
+
+    public RegFrame() {
+        // 프레임 기본 설정
+        setTitle("회원가입 창");
+        setSize(300, 250);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 회원가입 창 닫기 설정
+        setLocationRelativeTo(null);  // 화면 가운데에 창을 배치
+
+        // 패널 생성
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 2));  // 그리드 레이아웃으로 배치
+
+        // 레이블과 텍스트 필드 추가
+        JLabel nameLabel = new JLabel("이름:");
+        JTextField nameText = new JTextField(20);
+        JLabel userIdLabel = new JLabel("아이디:");
+        JTextField userIdText = new JTextField(20);
+        JLabel passwordLabel = new JLabel("비밀번호:");
+        JPasswordField passwordText = new JPasswordField(20);
+        JLabel emailLabel = new JLabel("이메일:");
+        JTextField emailText = new JTextField(20);
+        JButton registerButton = new JButton("가입하기");
+
+        // DAO 객체 초기화
+        memberDAO = new MemberDAOImpl();
+
+        // 가입하기 버튼 이벤트
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = nameText.getText();
+                String userId = userIdText.getText();
+                String password = new String(passwordText.getPassword());
+                String email = emailText.getText();
+
+                // 입력값 검증
+                if (!name.isEmpty() && !userId.isEmpty() && !password.isEmpty() && !email.isEmpty()) {
+                    Member member = new Member();
+                    member.setUserName(name);
+                    member.setUserId(userId);
+                    member.setUserPw(password);
+                    member.setUserEmail(email);
+                    
+                    // DB에 회원 정보 삽입
+                    boolean isInserted = memberDAO.insertMember(member);
+                    if (isInserted) {
+                        JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!");
+                        dispose(); // 회원가입 창 닫기
+                    } else {
+                        JOptionPane.showMessageDialog(null, "회원가입에 실패했습니다. 다시 시도해주세요.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "모든 필드를 입력해 주세요.");
+                }
+            }
+        });
+
+        // 패널에 컴포넌트 추가
+        panel.add(nameLabel);
+        panel.add(nameText);
+        panel.add(userIdLabel);
+        panel.add(userIdText);
+        panel.add(passwordLabel);
+        panel.add(passwordText);
+        panel.add(emailLabel);
+        panel.add(emailText);
+        panel.add(new JLabel()); // 빈 공간
+        panel.add(registerButton);
+
+        // 프레임에 패널 추가
+        add(panel);
+        setVisible(true);  // 창 표시
+    }
+}
