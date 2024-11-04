@@ -71,9 +71,11 @@
 * 해당 테스트 환경에선 이미지처럼 hs12 값으로 시도하였으나, 중복 유효성 검사에서 걸러짐.
 
 ![UserInfoUpdateFramePwUpdate](https://github.com/user-attachments/assets/022437ac-4f2f-4817-80aa-b3c50e25c89d)
-![UserInfoUpdateFramePwUpdateDB](https://github.com/user-attachments/assets/5b08c212-c928-437a-95a5-2320c1e4fba3)
+![RegFrameSucsessDB](https://github.com/user-attachments/assets/91748acd-5d1f-4089-af90-710903cbadb1) - 회원가입
+![UserInfoUpdateFramePwUpdateDB](https://github.com/user-attachments/assets/5b08c212-c928-437a-95a5-2320c1e4fba3) - 회원정보수정
 
 * 해당 예외 사항들을 준수하여 작성하면 PW, Email 수정이 가능함.
+* 가입 당시의 Hash화 된 비밀번호와 비교하여 새로운 비밀번호로 변경됨이 확인 가능함.
 * 해당 테스트 환경에선 원활한 테스트를 위해 t123으로 다시 설정.
   
 
