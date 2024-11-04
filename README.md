@@ -8,6 +8,7 @@
 ![RegFrame_1](https://github.com/user-attachments/assets/4cddf075-e132-4965-8c0e-8e4b30b6bae3)
 
 * 회원 가입 버튼 클릭시 표시되는 창.
+  
 ![RegFrameIdNullChk](https://github.com/user-attachments/assets/70137168-0115-4471-8bce-64568012d122)
 
 * 이름 -> 아이디 -> 비밀번호 -> 이메일 순서로 빈 필드가 있을 경우 경고 문구를 띄운다.
