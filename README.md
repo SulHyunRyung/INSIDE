@@ -10,6 +10,10 @@
 ![LoginFrame_1](https://github.com/user-attachments/assets/f2845fca-2d1b-484c-914e-46c21bf067ca)
 
 * 프로그램 실행 시 로그인을 통해 접속 및 이후 진행이 가능하다.
+  
+![LoginFrameError](https://github.com/user-attachments/assets/06bc96dd-a04a-412f-b3c3-68856a1e255c)
+
+* MEMBER_LIST 테이블의 USER_ID, USER_PW와 일치하지 않을 시 해당 경고 문구 출력.
 
 ## [ RegFrame ]
 
@@ -41,8 +45,9 @@
 * 로그인 시 해당 유저의 UID, USER_NAME, USER_ID, USER_PW, USER_EMAIL, REG_DATE 정보를 MainFrame에 전달.
 * 해당 정보를 통해 추후 MainFrame에서 파생되는 모든 창에서 USER 정보 이용 가능.
 
-![MainFrameLogOut](https://github.com/user-attachments/assets/9ba43357-3c43-4649-86b2-ba60ac4007c6)
-* 로그아웃 버튼을 누를 시 해당 안내 문구가 출력되고, 프로그램이 종료된다.
+![MainFrameLogOut](https://github.com/user-attachments/assets/ec221628-cc09-4031-b12c-82bfb83482ec)
+* 로그아웃 버튼을 누를 시 해당 확인 문구 출력 후, 확인 선택 시 프로그램이 종료된다.
+* 해당 MainFrame뿐만 아니라 다른 모든 프레임이 종료됨.
 
 ![MainFrameUserInfoUpdate](https://github.com/user-attachments/assets/bef0d579-fc1a-4732-ad7f-dc75bb5115a6)
 * 회원 정보 수정 버튼을 누를 경우, 정보 수정 창으로 이동 전 사용자의 ID와 PW를 확인하는 창 출력.
