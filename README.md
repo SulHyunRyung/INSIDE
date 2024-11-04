@@ -71,6 +71,8 @@
 * 해당 테스트 환경에선 이미지처럼 hs12 값으로 시도하였으나, 중복 유효성 검사에서 걸러짐.
 
 ![UserInfoUpdateFramePwUpdate](https://github.com/user-attachments/assets/022437ac-4f2f-4817-80aa-b3c50e25c89d)
+![UserInfoUpdateFramePwUpdateDB](https://github.com/user-attachments/assets/5b08c212-c928-437a-95a5-2320c1e4fba3)
+
 * 해당 예외 사항들을 준수하여 작성하면 PW, Email 수정이 가능함.
 * 해당 테스트 환경에선 원활한 테스트를 위해 t123으로 다시 설정.
   
@@ -126,3 +128,14 @@
 
 ## Daily Report
 * Login & Register Frame 제작 및 기능 구현(연동)
+
+# 24. 11. 02
+
+## Daily Report
+* UserInfoUpdate(회원 정보 수정) 창 GUI 구현 및 기능 구현
+
+# 24. 11. 03
+
+## Daily Report
+* BoardFrame(게시판) GUI 구현
+* 회원 가입, 회원 정보 수정 본인 인증, 회원 정보 수정 란에서 비밀번호 생성 및 수정에서 비밀번호 Hash화 하여 암호화 진행.
