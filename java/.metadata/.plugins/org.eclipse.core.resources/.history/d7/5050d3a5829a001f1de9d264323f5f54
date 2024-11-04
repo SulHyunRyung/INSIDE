@@ -82,6 +82,7 @@ public class UserInfoUpdate extends JDialog {
         gbc.gridx = 1;
         add(emailField, gbc);
 
+        // 안내 문구 추가
         JLabel infoLabel = new JLabel("비밀번호는 변경 시에만 입력해주세요.");
         infoLabel.setForeground(Color.GRAY);
 
@@ -107,7 +108,7 @@ public class UserInfoUpdate extends JDialog {
                         JOptionPane.showMessageDialog(UserInfoUpdate.this, "비밀번호가 일치하지 않습니다.", "오류", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    member.setUserPw(newPassword); // 새 비밀번호가 입력될 경우만 새로 설정
+                    member.setUserPw(newPassword); // 새 비밀번호 설정
                 }
 
                 // 이메일 중복 체크
@@ -130,7 +131,7 @@ public class UserInfoUpdate extends JDialog {
             }
         });
 
-        gbc.gridy = 6;
+        gbc.gridy = 6; // 회원 정보 수정 버튼 위치 조정
         add(updateButton, gbc);
     }
 }

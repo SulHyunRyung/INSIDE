@@ -1,7 +1,7 @@
 package gui;
 
 import model.Member;
-import util.PwChk;
+import util.PwChk; // 해시 관련 유틸리티를 사용하기 위해 import 추가
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -55,10 +55,11 @@ public class UserChk extends JDialog {
                 String enteredId = idField.getText();
                 String enteredPw = new String(pwField.getPassword());
 
-                // 입력된 ID 및 PW(hash)가 회원 정보와 일치하는지 확인
+                // 입력된 ID가 회원 정보와 일치하는지 확인
                 if (enteredId.equals(member.getUserId())) {
+                    // 비밀번호 해시 체크
                     if (PwChk.checkPassword(enteredPw, member.getUserPw())) {
-                        JOptionPane.showMessageDialog(UserChk.this, "인증되었습니다.", "본인 확인", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(UserChk.this, "확인되었습니다.", "본인 확인", JOptionPane.INFORMATION_MESSAGE);
                         dispose();
                         new UserInfoUpdate(parent, member).setVisible(true);
                     } else {

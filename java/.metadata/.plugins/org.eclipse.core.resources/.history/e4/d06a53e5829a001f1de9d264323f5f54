@@ -59,13 +59,16 @@ public class RegFrame extends JFrame {
         if (userName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "이름을 입력하세요.");
             return;
-        } else if (userId.isEmpty()) {
+        }
+        if (userId.isEmpty()) {
             JOptionPane.showMessageDialog(this, "아이디를 입력하세요.");
             return;
-        } else if (password.isEmpty()) {
+        }
+        if (password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "비밀번호를 입력하세요.");
             return;
-        } else if (email.isEmpty()) {
+        }
+        if (email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "이메일을 입력하세요.");
             return;
         }

@@ -43,8 +43,8 @@ public class LoginFrame extends JFrame {
                 Member member = getMember(username, password);
 
                 if (member != null) {
-                    new MainFrame(member); 
-                    dispose();
+                    new MainFrame(member); // 회원 정보를 MainFrame에 전달
+                    dispose(); // 로그인 창 닫기
                 } else {
                     JOptionPane.showMessageDialog(null, "아이디 혹은 비밀번호를 확인해주세요.");
                 }

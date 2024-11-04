@@ -130,7 +130,7 @@ public class UserInfoUpdate extends JDialog {
             }
         });
 
-        gbc.gridy = 6;
+        gbc.gridy = 6; // 회원 정보 수정 버튼 위치 조정
         add(updateButton, gbc);
     }
 }

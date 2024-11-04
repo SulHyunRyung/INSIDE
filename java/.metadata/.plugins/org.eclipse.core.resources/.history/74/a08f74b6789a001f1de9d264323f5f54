@@ -29,7 +29,7 @@ public class UserInfoUpdate extends JDialog {
         JLabel nameLabel = new JLabel("이름:");
         nameField = new JTextField(member.getUserName(), 15);
         nameField.setEditable(false);
-
+        
         gbc.gridx = 0;
         gbc.gridy = 0;
         add(nameLabel, gbc);
@@ -82,24 +82,12 @@ public class UserInfoUpdate extends JDialog {
         gbc.gridx = 1;
         add(emailField, gbc);
 
-        JLabel infoLabel = new JLabel("비밀번호는 변경 시에만 입력해주세요.");
-        infoLabel.setForeground(Color.GRAY);
-
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        add(infoLabel, gbc);
-
         JButton updateButton = new JButton("회원 정보 수정");
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String newPassword = new String(newPasswordField.getPassword());
                 String confirmPassword = new String(confirmPasswordField.getPassword());
-                String newEmail = emailField.getText();
-
-                MemberDAOImpl memberDAO = new MemberDAOImpl();
 
                 // 변경되는 비밀번호 유효성 체크
                 if (!newPassword.isEmpty() || !confirmPassword.isEmpty()) {
@@ -107,18 +95,13 @@ public class UserInfoUpdate extends JDialog {
                         JOptionPane.showMessageDialog(UserInfoUpdate.this, "비밀번호가 일치하지 않습니다.", "오류", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    member.setUserPw(newPassword); // 새 비밀번호가 입력될 경우만 새로 설정
-                }
-
-                // 이메일 중복 체크
-                if (!newEmail.equals(member.getUserEmail()) && memberDAO.isUserEmailExists(newEmail)) {
-                    JOptionPane.showMessageDialog(UserInfoUpdate.this, "이미 사용 중인 이메일입니다.", "오류", JOptionPane.ERROR_MESSAGE);
-                    return;
+                    member.setUserPw(newPassword); // 새 비밀번호 설정
                 }
 
                 member.setUserName(nameField.getText());
-                member.setUserEmail(newEmail);
+                member.setUserEmail(emailField.getText());
 
+                MemberDAOImpl memberDAO = new MemberDAOImpl();
                 boolean isUpdated = memberDAO.updateMember(member);
 
                 if (isUpdated) {
@@ -130,7 +113,10 @@ public class UserInfoUpdate extends JDialog {
             }
         });
 
-        gbc.gridy = 6;
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         add(updateButton, gbc);
     }
 }

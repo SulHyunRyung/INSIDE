@@ -2,8 +2,8 @@ package gui;
 
 import javax.swing.*;
 import model.Member;
-import dao.MemberDAOImpl;
-import util.UserExists;
+import dao.MemberDAOImpl; // MemberDAO의 구현체 임포트
+import util.UserExists; // UserExists 임포트
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,13 +59,16 @@ public class RegFrame extends JFrame {
         if (userName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "이름을 입력하세요.");
             return;
-        } else if (userId.isEmpty()) {
+        }
+        if (userId.isEmpty()) {
             JOptionPane.showMessageDialog(this, "아이디를 입력하세요.");
             return;
-        } else if (password.isEmpty()) {
+        }
+        if (password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "비밀번호를 입력하세요.");
             return;
-        } else if (email.isEmpty()) {
+        }
+        if (email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "이메일을 입력하세요.");
             return;
         }
@@ -90,7 +93,7 @@ public class RegFrame extends JFrame {
 
         MemberDAOImpl memberDAO = new MemberDAOImpl();
         if (memberDAO.insertMember(newMember)) {
-            JOptionPane.showMessageDialog(this, "회원가입에 성공했습니다. 다시 로그인해주세요.");
+            JOptionPane.showMessageDialog(this, "회원가입 성공!");
             dispose();
             JOptionPane.showMessageDialog(this, "회원가입 실패. 다시 시도하세요.");
         }
