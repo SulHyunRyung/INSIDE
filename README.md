@@ -123,7 +123,7 @@
 * 기능 구현을 위한 DAO 및 DAOImpl 의 메서드 작성
 * 사용되는 테이블의 유효성 체크 후 구조 변경
 
-## 2. 기능 메서드의 트랜잭션 처리 해결과정 
+## Issue 3. 기능 메서드의 트랜잭션 처리 해결과정 
 [Issue#3](https://github.com/SulHyunRyung/INSIDE/issues/3)
 
 # 24. 11. 01
@@ -141,3 +141,9 @@
 ## Daily Report
 * BoardFrame(게시판) GUI 구현
 * 회원 가입, 회원 정보 수정 본인 인증, 회원 정보 수정 란에서 비밀번호 생성 및 수정에서 비밀번호 Hash화 하여 암호화 진행.
+
+## Issue 4. 비밀번호 보안 / Hashing
+[Issue#4](https://github.com/SulHyunRyung/INSIDE/issues/4)
+
+## Issue 5. Password Hashing 중 데이터 삽입 오류g
+[Issue#5](https://github.com/SulHyunRyung/INSIDE/issues/5)
