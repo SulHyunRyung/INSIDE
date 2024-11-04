@@ -2,6 +2,7 @@ package gui;
 
 import model.Member;
 import util.DBconn;
+import util.PwChk; // PwChk 클래스 import
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +17,7 @@ public class LoginFrame extends JFrame {
     private static final long serialVersionUID = 1L;
 
     public LoginFrame() {
-        setTitle("로그인 창");
+        setTitle("Login");
         setSize(300, 150);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -73,25 +74,29 @@ public class LoginFrame extends JFrame {
     }
 
     private Member getMember(String username, String password) {
-        String sql = "SELECT * FROM MEMBER_LIST WHERE USER_ID = ? AND USER_PW = ?";
-        
+        String sql = "SELECT * FROM MEMBER_LIST WHERE USER_ID = ?";
+
         try (Connection conn = DBconn.connectDB();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-             
+
             pstmt.setString(1, username);
-            pstmt.setString(2, password);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    // 회원 정보를 Member 객체로 생성
-                    return new Member(
-                        rs.getString("UID"),
-                        rs.getString("USER_NAME"),
-                        rs.getString("USER_ID"),
-                        rs.getString("USER_PW"),
-                        rs.getString("USER_EMAIL"),
-                        rs.getDate("REG_DATE")
-                    );
+                    String hashedPassword = rs.getString("USER_PW");
+
+                    // PwChk 클래스를 사용하여 비밀번호 체크
+                    if (PwChk.checkPassword(password, hashedPassword)) {
+                        // 회원 정보를 Member 객체로 생성
+                        return new Member(
+                            rs.getString("UID"),
+                            rs.getString("USER_NAME"),
+                            rs.getString("USER_ID"),
+                            hashedPassword,
+                            rs.getString("USER_EMAIL"),
+                            rs.getDate("REG_DATE")
+                        );
+                    }
                 }
             }
         } catch (SQLException e) {
