@@ -27,7 +27,8 @@
 ![RegFrameSucsess](https://github.com/user-attachments/assets/8327ef5d-c68f-480d-8d18-bb7b2f7762de)
 ![RegFrameSucsessDB](https://github.com/user-attachments/assets/91748acd-5d1f-4089-af90-710903cbadb1)
 
-* 정상적으로 회원 가입이 완료 될 경우 입력한 정보로 DB -> MEMBER_LIST 테이블에 정보가 들어가고 있는 것을 확인 및 비밀번호 암호화까지 확인.
+* 정상적으로 회원 가입이 완료 될 경우 입력한 정보로 DB ->
+* MEMBER_LIST 테이블에 정보가 들어가고 있는 것을 확인 및 비밀번호 암호화까지 확인.
 
 
 
