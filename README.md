@@ -10,7 +10,7 @@
 
 ## [ RegFrame ]
 
-![RegFrame_1](https://github.com/user-attachments/assets/4cddf075-e132-4965-8c0e-8e4b30b6bae3)
+![RegFrame](https://github.com/user-attachments/assets/4cddf075-e132-4965-8c0e-8e4b30b6bae3)
 
 * 회원 가입 버튼 클릭시 표시되는 창.
   
@@ -29,6 +29,20 @@
 
 * 정상적으로 회원 가입이 완료 될 경우 입력한 정보로 DB ->
 * MEMBER_LIST 테이블에 정보가 들어가고 있는 것을 확인 및 비밀번호 암호화까지 확인.
+
+[ MainFrame ]
+
+![MainFrame](https://github.com/user-attachments/assets/6fe4fe08-e1f9-4781-8fcb-c3f2d21a695f)
+* 로그인 시 처음으로 출력되는 MainFrame 창.
+* (USER_NAME)[TesterGit_1]님 안녕하세요. 문구에서 확인할 수 있듯이,
+* 로그인 시 해당 유저의 UID, USER_NAME, USER_ID, USER_PW, USER_EMAIL, REG_DATE 정보를 MainFrame에 전달.
+* 해당 정보를 통해 추후 MainFrame에서 파생되는 모든 창에서 USER 정보 이용 가능.
+
+![MainFrameLogOut](https://github.com/user-attachments/assets/9ba43357-3c43-4649-86b2-ba60ac4007c6)
+* 로그아웃 버튼을 누를 시 해당 안내 문구가 출력되고, 프로그램이 종료된다.
+
+![MainFrameUserInfoUpdate](https://github.com/user-attachments/assets/bef0d579-fc1a-4732-ad7f-dc75bb5115a6)
+* 회원 정보 수정 버튼을 누를 경우, 정보 수정 창으로 이동 전 사용자의 ID와 PW를 확인하는 창 출력.
 
 
 
