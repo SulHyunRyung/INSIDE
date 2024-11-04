@@ -146,5 +146,8 @@
 ## Issue 4. 비밀번호 보안 / Hashing
 [Issue#4](https://github.com/SulHyunRyung/INSIDE/issues/4)
 
-## Issue 5. Password Hashing 중 데이터 삽입 오류g
+## Issue 5. Password Hashing 중 데이터 삽입 오류
 [Issue#5](https://github.com/SulHyunRyung/INSIDE/issues/5)
+
+## Issue 6. BoardFrame 구성 중 한글 폰트 깨짐 현상
+[Issue#5](https://github.com/SulHyunRyung/INSIDE/issues/6)
