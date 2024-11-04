@@ -1,9 +1,9 @@
 # INSIDE 
 * [SRS](https://github.com/SulHyunRyung/INSIDE/blob/main/referance/SRS.txt)
 
-Test Name : TesterGit_1
-Test ID : tester1
-Test PW : p123
+* Test Name : TesterGit_1
+* Test ID : tester1
+* Test PW : p123
 
 ## [ LoginFrame ]
 
