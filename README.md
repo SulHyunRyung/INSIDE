@@ -1,29 +1,24 @@
 # INSIDE 
 * [SRS](https://github.com/SulHyunRyung/INSIDE/blob/main/referance/SRS.txt)
 
-
 ![LoginFrame_1](https://github.com/user-attachments/assets/f2845fca-2d1b-484c-914e-46c21bf067ca)
 
-프로그램 실행 시 로그인을 통해 접속 및 이후 진행이 가능하다.
-
+* 프로그램 실행 시 로그인을 통해 접속 및 이후 진행이 가능하다.
 ![RegFrame_1](https://github.com/user-attachments/assets/4cddf075-e132-4965-8c0e-8e4b30b6bae3)
 
-회원 가입 버튼 클릭시 표시되는 창.
-
+* 회원 가입 버튼 클릭시 표시되는 창.
 ![RegFrameIdNullChk](https://github.com/user-attachments/assets/70137168-0115-4471-8bce-64568012d122)
 
-이름 -> 아이디 -> 비밀번호 -> 이메일 순서로 빈 필드가 있을 경우 경고 문구를 띄운다.
-
+* 이름 -> 아이디 -> 비밀번호 -> 이메일 순서로 빈 필드가 있을 경우 경고 문구를 띄운다.
 ![RegFrameExistsIdDB](https://github.com/user-attachments/assets/53f65b0d-46cd-4fb3-a2db-fd4fbdc29e07)
 ![RegFrameExistsId](https://github.com/user-attachments/assets/98919bbb-7529-4f24-a1ae-b90051266f3c)
 
-이미지처럼 기존에 있는 ID, Email로 생성 시도 시 경고 문구 출력 및 계정 생성 제한이 걸린다.
-Ex ) 기존에 테스트용 계정으로 생성해둔 ID : hs12 아이디는 유효성 검사를 통해 중복이 확인 될 경우 이미지처럼 경고 문구 출력.
-
+*이미지처럼 기존에 있는 ID, Email로 생성 시도 시 경고 문구 출력 및 계정 생성 제한이 걸린다.
+*Ex ) 기존에 테스트용 계정으로 생성해둔 ID : hs12 아이디는 유효성 검사를 통해 중복이 확인 될 경우 이미지처럼 경고 문구 출력.
 ![RegFrameSucsess](https://github.com/user-attachments/assets/8327ef5d-c68f-480d-8d18-bb7b2f7762de)
 ![RegFrameSucsessDB](https://github.com/user-attachments/assets/91748acd-5d1f-4089-af90-710903cbadb1)
 
-정상적으로 회원 가입이 완료 될 경우 입력한 정보로 DB -> MEMBER_LIST 테이블에 정보가 들어가고 있는 것을 확인 및 비밀번호 암호화까지 확인.
+* 정상적으로 회원 가입이 완료 될 경우 입력한 정보로 DB -> MEMBER_LIST 테이블에 정보가 들어가고 있는 것을 확인 및 비밀번호 암호화까지 확인.
 
 
 
