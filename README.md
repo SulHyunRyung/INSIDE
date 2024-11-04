@@ -33,7 +33,7 @@ Test PW : p123
 * 정상적으로 회원 가입이 완료 될 경우 입력한 정보로 DB ->
 * MEMBER_LIST 테이블에 정보가 들어가고 있는 것을 확인 및 비밀번호 암호화까지 확인.
 
-## [ MainFrame ]
+## [ MainFrame ] - 게시판 화면의 경우 추후 추가 후 수정 예정.
 
 ![MainFrame](https://github.com/user-attachments/assets/6fe4fe08-e1f9-4781-8fcb-c3f2d21a695f)
 * 로그인 시 처음으로 출력되는 MainFrame 창.
