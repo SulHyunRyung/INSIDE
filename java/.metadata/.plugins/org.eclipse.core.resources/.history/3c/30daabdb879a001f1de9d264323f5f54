@@ -5,10 +5,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainFrame extends JFrame {
     private static final long serialVersionUID = 1L;
-    private BoardFrame boardFrame; // BoardFrame을 멤버 변수로 추가
+    private List<JFrame> openFrames = new ArrayList<>();
 
     public MainFrame(Member member) {
         setTitle("Main Window");
@@ -18,17 +20,17 @@ public class MainFrame extends JFrame {
         setResizable(false);
 
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout(10, 10)); 
+        mainPanel.setLayout(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BorderLayout());
 
-        ImageIcon logoIcon = new ImageIcon("../../img/logo.png"); 
+        ImageIcon logoIcon = new ImageIcon("../../img/logo.png");
         Image img = logoIcon.getImage();
         Image newImg = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(newImg));
-        
+
         topPanel.add(logoLabel, BorderLayout.WEST);
 
         JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -38,38 +40,36 @@ public class MainFrame extends JFrame {
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int response = JOptionPane.showConfirmDialog(MainFrame.this, "정말 로그아웃 하시겠습니까?", "로그아웃 확인", JOptionPane.YES_NO_OPTION);
-                if (response == JOptionPane.YES_OPTION) {
-                    JOptionPane.showMessageDialog(null, "안녕히 가세요.\n" + member.getUserName() + "님.", "로그아웃", JOptionPane.INFORMATION_MESSAGE);
-                    if (boardFrame != null) {
-                        boardFrame.dispose(); // BoardFrame이 열려있다면 닫기
-                    }
-                    dispose(); // MainFrame 닫기
+                // 모든 열린 창을 닫습니다.
+                for (JFrame frame : openFrames) {
+                    frame.dispose();
                 }
+                JOptionPane.showMessageDialog(null, "안녕히 가세요.\n" + member.getUserName() + "님.", "로그아웃", JOptionPane.INFORMATION_MESSAGE);
+                dispose(); // 현재 프레임도 닫기
             }
         });
-        
+
         userPanel.add(greetingLabel);
         userPanel.add(logoutButton);
-        
+
         topPanel.add(userPanel, BorderLayout.CENTER);
-        
+
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        
+
         JPanel boardPanel = new JPanel();
         boardPanel.setLayout(new GridLayout(0, 1));
-        boardPanel.setBorder(BorderFactory.createEmptyBorder()); 
+        boardPanel.setBorder(BorderFactory.createEmptyBorder());
 
         for (int i = 1; i <= 5; i++) {
             boardPanel.add(new JLabel("게시물 " + i));
         }
 
         JScrollPane scrollPane = new JScrollPane(boardPanel);
-        scrollPane.setPreferredSize(new Dimension(400, 200)); 
+        scrollPane.setPreferredSize(new Dimension(400, 200));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -81,7 +81,7 @@ public class MainFrame extends JFrame {
         JButton editInfoButton = new JButton("회원 정보 수정");
         JButton friendListButton = new JButton("친구 목록");
         JButton boardMoveButton = new JButton("게시판으로 이동");
-        
+
         Dimension buttonSize = new Dimension(180, 40);
         editInfoButton.setPreferredSize(buttonSize);
         friendListButton.setPreferredSize(buttonSize);
@@ -90,15 +90,18 @@ public class MainFrame extends JFrame {
         editInfoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new UserChk(MainFrame.this, member).setVisible(true);
+                UserChk userChk = new UserChk(MainFrame.this, member);
+                userChk.setVisible(true);
+                MainFrame.this.addOpenFrame(userChk); // 열린 프레임 리스트에 추가
             }
         });
 
         boardMoveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boardFrame = new BoardFrame(member.getUserName());
+                BoardFrame boardFrame = new BoardFrame(member.getUserName());
                 boardFrame.setVisible(true);
+                MainFrame.this.addOpenFrame(boardFrame); // 열린 프레임 리스트에 추가
             }
         });
 
@@ -106,23 +109,28 @@ public class MainFrame extends JFrame {
         btnGbc.gridx = 0;
         btnGbc.gridy = 0;
         btnGbc.insets = new Insets(10, 15, 25, 0);
-        buttonPanel.add(editInfoButton, btnGbc); 
-        
+        buttonPanel.add(editInfoButton, btnGbc);
+
         btnGbc.gridy = 1;
-        buttonPanel.add(friendListButton, btnGbc); 
-        
+        buttonPanel.add(friendListButton, btnGbc);
+
         btnGbc.gridy = 2;
         buttonPanel.add(boardMoveButton, btnGbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
-        centerPanel.add(buttonPanel, gbc); 
+        centerPanel.add(buttonPanel, gbc);
 
         mainPanel.add(centerPanel, BorderLayout.CENTER);
-        
+
         add(mainPanel);
-        pack(); 
+        pack();
         setVisible(true);
+    }
+
+    // 새 창이 열릴 때 호출
+    public void addOpenFrame(JFrame frame) {
+        openFrames.add(frame);
     }
 
     public static void main(String[] args) {

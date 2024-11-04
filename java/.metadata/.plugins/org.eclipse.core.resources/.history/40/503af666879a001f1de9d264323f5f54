@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
     private static final long serialVersionUID = 1L;
-    private BoardFrame boardFrame; // BoardFrame을 멤버 변수로 추가
 
     public MainFrame(Member member) {
         setTitle("Main Window");
@@ -38,14 +37,8 @@ public class MainFrame extends JFrame {
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int response = JOptionPane.showConfirmDialog(MainFrame.this, "정말 로그아웃 하시겠습니까?", "로그아웃 확인", JOptionPane.YES_NO_OPTION);
-                if (response == JOptionPane.YES_OPTION) {
-                    JOptionPane.showMessageDialog(null, "안녕히 가세요.\n" + member.getUserName() + "님.", "로그아웃", JOptionPane.INFORMATION_MESSAGE);
-                    if (boardFrame != null) {
-                        boardFrame.dispose(); // BoardFrame이 열려있다면 닫기
-                    }
-                    dispose(); // MainFrame 닫기
-                }
+                JOptionPane.showMessageDialog(null, "안녕히 가세요.\n" + member.getUserName() + "님.", "로그아웃", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
             }
         });
         
@@ -97,8 +90,7 @@ public class MainFrame extends JFrame {
         boardMoveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boardFrame = new BoardFrame(member.getUserName());
-                boardFrame.setVisible(true);
+                new BoardFrame(member.getUserName()).setVisible(true);
             }
         });
 
