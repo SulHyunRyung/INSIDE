@@ -33,7 +33,7 @@ Test PW : p123
 * 정상적으로 회원 가입이 완료 될 경우 입력한 정보로 DB ->
 * MEMBER_LIST 테이블에 정보가 들어가고 있는 것을 확인 및 비밀번호 암호화까지 확인.
 
-[ MainFrame ]
+## [ MainFrame ]
 
 ![MainFrame](https://github.com/user-attachments/assets/6fe4fe08-e1f9-4781-8fcb-c3f2d21a695f)
 * 로그인 시 처음으로 출력되는 MainFrame 창.
@@ -50,7 +50,28 @@ Test PW : p123
 ![MainFrameUserInfoUpdateChkFail](https://github.com/user-attachments/assets/2bad021c-1b7c-4b20-ac56-d4c5433f4ac3)
 * 해당 창에서도 ID, PW의 인증에 실패하면 경고 문구가 출력되도록 설정.
 
+![MainFrameUserInfoUpdateChkSucsess](https://github.com/user-attachments/assets/d209d790-a33d-4f19-8839-dfa9d477d780)
+* ID, PW 인증 성공 시 성공 알림 출력 후 회원 정보 수정 창으로 이동함.
 
+## [ UserInfoUpdate ]
+
+![UserInfoUpdateFrame](https://github.com/user-attachments/assets/bc5b7c14-e479-4a55-9def-6295b1a5c6d3)
+* 회원 정보 수정 기본 화면
+* USER_NAME, USER_ID는 고유값으로 setEditable(false) 설정
+
+![UserInfoUpdateFramePwExists](https://github.com/user-attachments/assets/61fbc203-8cb5-4117-a6d4-4134d1f95753)
+* 변경할 새 비밀번호와 새 비밀번호 확인란의 다른 문자가 입력되면 경고 문구 출력.
+
+![UserInfoUpdateFramePwNull](https://github.com/user-attachments/assets/ef180442-716b-4662-886a-922ae309ba17)
+* 새 비밀번호 칸을 공란으로 설정 시 변경되지 않고, 기존 비밀번호 유지 가능.
+
+![AlreadyExistsEmailList](https://github.com/user-attachments/assets/024f2225-8b4b-4b53-9a88-8dcfd1f95696)
+![AlreadyExistsEmail](https://github.com/user-attachments/assets/1052350b-fbe8-4d39-bbd5-05a9696123a7)
+* 이메일의 경우 가입할 당시 고유값 (중복 금지)로 받았기 때문에, 해당 수정 창에서도 중복 체크를 실행.
+
+![UserInfoUpdateFramePwUpdate](https://github.com/user-attachments/assets/022437ac-4f2f-4817-80aa-b3c50e25c89d)
+* 해당 예외 사항들을 준수하여 작성하면 PW, Email 수정이 가능함.
+  
 
 
 
