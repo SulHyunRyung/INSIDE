@@ -1,6 +1,9 @@
 # INSIDE 
 * [SRS](https://github.com/SulHyunRyung/INSIDE/blob/main/referance/SRS.txt)
 
+Test Name : TesterGit_1
+Test ID : tester1
+Test PW : p123
 
 ## [ LoginFrame ]
 
@@ -44,7 +47,8 @@
 ![MainFrameUserInfoUpdate](https://github.com/user-attachments/assets/bef0d579-fc1a-4732-ad7f-dc75bb5115a6)
 * 회원 정보 수정 버튼을 누를 경우, 정보 수정 창으로 이동 전 사용자의 ID와 PW를 확인하는 창 출력.
 
-
+![MainFrameUserInfoUpdateChkFail](https://github.com/user-attachments/assets/2bad021c-1b7c-4b20-ac56-d4c5433f4ac3)
+* 해당 창에서도 ID, PW의 인증에 실패하면 경고 문구가 출력되도록 설정.
 
 
 
