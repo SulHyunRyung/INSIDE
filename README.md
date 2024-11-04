@@ -136,7 +136,7 @@
 ## Daily Report
 * UserInfoUpdate(회원 정보 수정) 창 GUI 구현 및 기능 구현
 
-# 24. 11. 03
+# 24. 11. 04
 
 ## Daily Report
 * BoardFrame(게시판) GUI 구현
