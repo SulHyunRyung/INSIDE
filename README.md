@@ -68,6 +68,7 @@ Test PW : p123
 ![AlreadyExistsEmailList](https://github.com/user-attachments/assets/024f2225-8b4b-4b53-9a88-8dcfd1f95696)
 ![AlreadyExistsEmail](https://github.com/user-attachments/assets/1052350b-fbe8-4d39-bbd5-05a9696123a7)
 * 이메일의 경우 가입할 당시 고유값 (중복 금지)로 받았기 때문에, 해당 수정 창에서도 중복 체크를 실행.
+* 해당 테스트 환경에선 이미지처럼 hs12 값으로 시도하였으나, 중복 유효성 검사에서 걸러짐.
 
 ![UserInfoUpdateFramePwUpdate](https://github.com/user-attachments/assets/022437ac-4f2f-4817-80aa-b3c50e25c89d)
 * 해당 예외 사항들을 준수하여 작성하면 PW, Email 수정이 가능함.
