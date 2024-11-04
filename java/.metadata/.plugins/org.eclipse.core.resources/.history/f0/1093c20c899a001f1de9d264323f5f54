@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class UserExists {
 
-    // USER_ID가 중복 여부 체크
+    // USER_ID가 존재하는지 체크
     public boolean isUserIdExists(String userId) {
         String sql = "SELECT COUNT(*) FROM MEMBER_LIST WHERE USER_ID = ?";
         try (Connection conn = DBconn.connectDB(); // DBconn을 통해 DB 연결
@@ -21,24 +21,24 @@ public class UserExists {
         	} catch (SQLException e) {
         	    e.printStackTrace();
         	}
-        return false;
+        return false; // 예외 발생 시 기본값으로 false 반환
     }
 
-    // USER_EMAIL 중복 여부 체크
+    // 사용자 이메일이 존재하는지 체크
     public boolean isUserEmailExists(String userEmail) {
         String sql = "SELECT COUNT(*) FROM MEMBER_LIST WHERE USER_EMAIL = ?";
-        try (Connection conn = DBconn.connectDB();
+        try (Connection conn = DBconn.connectDB(); // DBconn을 통해 DB 연결
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
              
             pstmt.setString(1, userEmail);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    return rs.getInt(1) > 0; // 결과가 0보다 크면 중복
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return false; // 예외 발생 시 기본값으로 false 반환
     }
 }

@@ -85,8 +85,9 @@ public class LoginFrame extends JFrame {
                 if (rs.next()) {
                     String hashedPassword = rs.getString("USER_PW");
 
-                    // PwChk 유효성 검사 코드
+                    // PwChk 클래스를 사용하여 비밀번호 체크
                     if (PwChk.checkPassword(password, hashedPassword)) {
+                        // 회원 정보를 Member 객체로 생성
                         return new Member(
                             rs.getString("UID"),
                             rs.getString("USER_NAME"),
@@ -101,6 +102,6 @@ public class LoginFrame extends JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return null; // 로그인 실패 시 null 반환
     }
 }
