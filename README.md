@@ -72,6 +72,7 @@ Test PW : p123
 
 ![UserInfoUpdateFramePwUpdate](https://github.com/user-attachments/assets/022437ac-4f2f-4817-80aa-b3c50e25c89d)
 * 해당 예외 사항들을 준수하여 작성하면 PW, Email 수정이 가능함.
+* 해당 테스트 환경에선 원활한 테스트를 위해 t123으로 다시 설정.
   
 
 
