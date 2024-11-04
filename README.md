@@ -2,13 +2,13 @@
 * [SRS](https://github.com/SulHyunRyung/INSIDE/blob/main/referance/SRS.txt)
 
 
-[LoginFrame]
+## [ LoginFrame ]
 
 ![LoginFrame_1](https://github.com/user-attachments/assets/f2845fca-2d1b-484c-914e-46c21bf067ca)
 
 * 프로그램 실행 시 로그인을 통해 접속 및 이후 진행이 가능하다.
 
-[RegFrame]
+## [ RegFrame ]
 
 ![RegFrame_1](https://github.com/user-attachments/assets/4cddf075-e132-4965-8c0e-8e4b30b6bae3)
 
