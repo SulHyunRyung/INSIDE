@@ -1,0 +1,40 @@
+package util;
+
+import gui.MainFrame;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+public class LogoutEvent implements ActionListener {
+    private static List<JFrame> activeFrames = new ArrayList<>(); 
+    private MainFrame mainFrame;
+    private String userName;
+
+    public LogoutEvent(MainFrame mainFrame, String userName) {
+        this.mainFrame = mainFrame;
+        this.userName = userName;
+        activeFrames.add(mainFrame);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int response = JOptionPane.showConfirmDialog(mainFrame, "정말 로그아웃 하시겠습니까?", "로그아웃 확인", JOptionPane.YES_NO_OPTION);
+        if (response == JOptionPane.YES_OPTION) {
+            JOptionPane.showMessageDialog(null, "안녕히 가세요.\n" + userName + "님.", "로그아웃", JOptionPane.INFORMATION_MESSAGE);
+            for (JFrame frame : activeFrames) { 
+                frame.dispose();
+            }
+            activeFrames.clear();
+        }
+    }
+
+    public static void registerFrame(JFrame frame) {
+        activeFrames.add(frame);
+    }
+
+    public static void unregisterFrame(JFrame frame) {
+        activeFrames.remove(frame);
+    }
+}

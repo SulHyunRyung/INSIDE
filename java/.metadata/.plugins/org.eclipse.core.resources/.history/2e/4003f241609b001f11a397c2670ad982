@@ -1,0 +1,19 @@
+package main;
+import model.Post;
+import gui.PostViewFrame;
+
+public class Main {
+    public static void main(String[] args) {
+        // 테스트를 위한 게시물 데이터 생성
+        Post testPost = new Post();
+        testPost.setPostId("1");
+        testPost.setPostTitle("테스트 게시물");
+        testPost.setContents("이것은 테스트 게시물의 내용입니다.");
+        testPost.setpUserId("테스트 작성자");
+        testPost.setCreateDate(new java.util.Date());
+        testPost.setUpdateDate(new java.util.Date());
+
+        // PostViewFrame 실행
+        new PostViewFrame(testPost);
+    }
+}

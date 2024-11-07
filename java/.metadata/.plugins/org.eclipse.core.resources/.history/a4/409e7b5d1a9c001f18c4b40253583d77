@@ -1,0 +1,28 @@
+@Override
+public boolean updateMember(Member member) { 
+    String sqlUpdate = "UPDATE " +
+            OracleQuery.MEMBER_TABLE + " SET " +
+            OracleQuery.COL_USER_PW + " = ?, " +
+            OracleQuery.COL_USER_EMAIL + " = ?, " +
+            OracleQuery.COL_INFO_UPDATE_DATE + " = SYSDATE WHERE " +
+            OracleQuery.COL_USER_ID + " = ?";
+
+    try (Connection conn = DBconn.connectDB()) {
+        conn.setAutoCommit(false);
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)) {
+            pstmt.setString(1, member.getUserPw());  // 비밀번호 해시된 값 사용
+            pstmt.setString(2, member.getUserEmail());
+            pstmt.setString(3, member.getUserId());
+            int pstmtResult = pstmt.executeUpdate();
+            conn.commit();
+            return pstmtResult > 0; 
+        } catch (SQLException e) {
+            conn.rollback();
+            e.printStackTrace();
+            return false;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+} // End updateMember

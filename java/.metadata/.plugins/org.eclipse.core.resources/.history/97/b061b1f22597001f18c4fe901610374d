@@ -1,8 +1,0 @@
-package dao;
-
-
-public interface MemberDAO {
- public default boolean insertMember (Member member) {
-	 
- }
-}

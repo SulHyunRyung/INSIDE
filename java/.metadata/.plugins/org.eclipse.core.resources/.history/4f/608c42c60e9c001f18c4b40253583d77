@@ -1,0 +1,151 @@
+package gui;
+
+import model.Member;
+import util.PwHash;
+import dao.MemberDAOImpl;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class UserInfoUpdate extends JDialog {
+    private static final long serialVersionUID = 1L;
+    private JTextField nameField;
+    private JTextField idField;
+    private JPasswordField newPasswordField;
+    private JPasswordField confirmPasswordField;
+    private JTextField emailField;
+
+    public UserInfoUpdate(JFrame parent, Member member) {
+        super(parent, "회원 정보 수정", true);
+        setSize(350, 300);
+        setLayout(new GridBagLayout());
+        setLocationRelativeTo(parent);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        // 이름
+        JLabel nameLabel = new JLabel("이름:");
+        nameField = new JTextField(member.getUserName(), 15);
+        nameField.setEditable(false);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(nameLabel, gbc);
+
+        gbc.gridx = 1;
+        add(nameField, gbc);
+
+        // ID (수정 불가)
+        JLabel idLabel = new JLabel("ID:");
+        idField = new JTextField(member.getUserId(), 15);
+        idField.setEditable(false);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(idLabel, gbc);
+
+        gbc.gridx = 1;
+        add(idField, gbc);
+
+        // 새 비밀번호
+        JLabel newPasswordLabel = new JLabel("새 비밀번호:");
+        newPasswordField = new JPasswordField(15);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        add(newPasswordLabel, gbc);
+
+        gbc.gridx = 1;
+        add(newPasswordField, gbc);
+
+        // 새 비밀번호 확인
+        JLabel confirmPasswordLabel = new JLabel("새 비밀번호 확인:");
+        confirmPasswordField = new JPasswordField(15);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        add(confirmPasswordLabel, gbc);
+
+        gbc.gridx = 1;
+        add(confirmPasswordField, gbc);
+
+        // EMAIL
+        JLabel emailLabel = new JLabel("EMAIL:");
+        emailField = new JTextField(member.getUserEmail(), 15);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        add(emailLabel, gbc);
+
+        gbc.gridx = 1;
+        add(emailField, gbc);
+
+        JLabel infoLabel = new JLabel("비밀번호는 변경 시에만 입력해주세요.");
+        infoLabel.setForeground(Color.GRAY);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(infoLabel, gbc);
+
+        JButton updateButton = new JButton("회원 정보 수정");
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String newPassword = new String(newPasswordField.getPassword());
+                String confirmPassword = new String(confirmPasswordField.getPassword());
+                String newEmail = emailField.getText().trim();;
+
+                MemberDAOImpl memberDAO = new MemberDAOImpl();
+
+             // 변경되는 비밀번호 유효성 체크
+                if (!newPassword.isEmpty() || !confirmPassword.isEmpty()) {
+                    if (!newPassword.equals(confirmPassword)) {
+                        JOptionPane.showMessageDialog(UserInfoUpdate.this, "비밀번호가 일치하지 않습니다.", "오류", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    
+                    // 기존 비밀번호와 비교하여 같은 비밀번호가 아닌 경우에만 업데이트
+                    if (PwHash.checkPassword(newPassword, member.getUserPw())) {
+                        JOptionPane.showMessageDialog(UserInfoUpdate.this, "새로운 비밀번호는 기존 비밀번호와 다르게 설정해 주세요.", "오류", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // 새로운 비밀번호 해시 후 설정
+                    member.setUserPw(PwHash.hashPassword(newPassword));
+                }
+             // 이메일 유효성 검사 (비어 있거나 기존 이메일과 동일한 경우 변경하지 않음)
+                if (!newEmail.isEmpty() && !newEmail.equals(member.getUserEmail())) {
+                    // 이메일 중복 체크
+                    if (memberDAO.isUserEmailExists(newEmail)) {
+                        JOptionPane.showMessageDialog(UserInfoUpdate.this, "이미 사용 중인 이메일입니다.", "오류", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    member.setUserEmail(newEmail); // 유효한 새로운 이메일일 경우에만 설정
+                } else if (newEmail.isEmpty()) {
+                    JOptionPane.showMessageDialog(UserInfoUpdate.this, "이메일을 입력해 주세요.", "오류", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                member.setUserName(nameField.getText());
+                member.setUserEmail(newEmail);
+
+                boolean isUpdated = memberDAO.updateMember(member);
+
+                if (isUpdated) {
+                    JOptionPane.showMessageDialog(UserInfoUpdate.this, "회원 정보가 성공적으로 수정되었습니다.", "확인", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(UserInfoUpdate.this, "회원 정보 수정에 실패했습니다.", "오류", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        gbc.gridy = 6;
+        add(updateButton, gbc);
+    }
+}

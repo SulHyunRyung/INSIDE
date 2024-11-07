@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="able"/>
+		<item key="selection" value="친구"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="able"/>
-			<item value="본인"/>
-			<item value="editInfoButton"/>
-			<item value="logoutButton"/>
-			<item value="User"/>
-			<item value="sqlDelete"/>
+			<item value="친구"/>
+			<item value="deleteSelectedPosts"/>
+			<item value="updatePostButton"/>
+			<item value="수정"/>
+			<item value="제목"/>
+			<item value="selectedPost"/>
+			<item value="package gui;"/>
+			<item value="CreatePost"/>
+			<item value="Create"/>
+			<item value="userCHK"/>
+			<item value="member"/>
+			<item value="info"/>
+			<item value="update"/>
+			<item value="."/>
+			<item value="updateMember"/>
 		</list>
 		<list key="replacehistory">
+			<item value=""/>
+			<item value="회원 가입 취소"/>
+			<item value="창을 닫으면 입력된 정보는 삭제됩니다. 창을 종료하시겠습니까?"/>
+			<item value="댓글은 100글자까지 입력 가능합니다."/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

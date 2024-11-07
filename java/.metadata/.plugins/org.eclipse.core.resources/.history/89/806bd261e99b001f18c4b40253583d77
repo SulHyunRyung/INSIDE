@@ -1,0 +1,143 @@
+package gui;
+
+import javax.swing.*;
+import model.Member;
+import dao.MemberDAOImpl;
+import util.UserExists;
+import java.awt.*;
+import java.awt.event.*;
+
+public class RegFrame extends JFrame {
+    private static final long serialVersionUID = 1L;
+    private JTextField userNameField;
+    private JTextField userIdField;
+    private JPasswordField passwordField;
+    private JTextField emailField;
+
+    public RegFrame() {
+        setTitle("회원가입");
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);  // 기본 종료 동작을 변경
+        setLocationRelativeTo(null);
+        setLayout(new GridLayout(5, 2));
+
+        userNameField = new JTextField();
+        userIdField = new JTextField();
+        passwordField = new JPasswordField();
+        emailField = new JTextField();
+
+        JButton registerButton = new JButton("회원가입");
+
+        add(new JLabel("이름:"));
+        add(userNameField);
+        add(new JLabel("아이디:"));
+        add(userIdField);
+        add(new JLabel("비밀번호:"));
+        add(passwordField);
+        add(new JLabel("이메일:"));
+        add(emailField);
+        add(registerButton);
+
+        // ESC 키를 눌렀을 때 확인창 띄우기
+        this.setFocusable(true);  // 포커스를 받을 수 있도록 설정
+        this.requestFocusInWindow();  // 창이 포커스를 받을 수 있도록 요청
+
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    int result = JOptionPane.showConfirmDialog(RegFrame.this, 
+                        "창을 닫으면 입력된 정보는 삭제됩니다. 종료 하시겠습니까?", "회원 가입 취소", 
+                        JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if (result == JOptionPane.YES_OPTION) {
+                        dispose();  // 창 닫기
+                    }
+                }
+            }
+        });
+
+        // 창을 닫을 때에도 확인 메시지 띄우기
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int result = JOptionPane.showConfirmDialog(RegFrame.this, 
+                    "창을 닫으면 입력된 정보는 삭제됩니다. 종료 하시겠습니까?", "회원 가입 취소", 
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    dispose();  // 창 닫기
+                }
+            }
+        });
+
+        // JTextField에도 ESC 이벤트 전달
+        addFocusListenerToFields(userNameField);
+        addFocusListenerToFields(userIdField);
+        addFocusListenerToFields(passwordField);
+        addFocusListenerToFields(emailField);
+
+        setVisible(true);
+    }
+
+    private void addFocusListenerToFields(JComponent component) {
+        component.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // 텍스트 필드가 포커스를 받을 때 ESC 키 이벤트를 JFrame으로 전달
+                RegFrame.this.requestFocusInWindow();
+            }
+        });
+    }
+
+    // 회원가입 처리 메서드 (기존 코드 그대로)
+    private void registerMember() {
+        String userName = userNameField.getText().trim();
+        String userId = userIdField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
+        String email = emailField.getText().trim();
+
+        // 빈 필드 체크
+        if (userName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "이름을 입력하세요.");
+            return;
+        } else if (userId.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "아이디를 입력하세요.");
+            return;
+        } else if (password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "비밀번호를 입력하세요.");
+            return;
+        } else if (email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "이메일을 입력하세요.");
+            return;
+        }
+
+        // 중복 체크
+        UserExists userExists = new UserExists();
+        if (userExists.isUserIdExists(userId)) {
+            JOptionPane.showMessageDialog(this, "이미 존재하는 아이디입니다.");
+            return;
+        }
+
+        if (userExists.isUserEmailExists(email)) {
+            JOptionPane.showMessageDialog(this, "이미 존재하는 이메일입니다.");
+            return;
+        }
+
+        Member newMember = new Member();
+        newMember.setUserName(userName);
+        newMember.setUserId(userId);
+        newMember.setUserPw(password);
+        newMember.setUserEmail(email);
+
+        MemberDAOImpl memberDAO = new MemberDAOImpl();
+        if (memberDAO.insertMember(newMember)) {
+            JOptionPane.showMessageDialog(this, "회원가입에 성공했습니다. 다시 로그인해주세요.");
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "회원가입 실패. 다시 시도하세요.");
+        }
+    }
+
+    public static void main(String[] args) {
+        new RegFrame();  // 테스트를 위한 main 메서드
+    }
+}

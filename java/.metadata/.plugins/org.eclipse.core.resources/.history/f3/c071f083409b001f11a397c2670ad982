@@ -1,0 +1,38 @@
+package gui;
+
+import util.UserValidation;
+import javax.swing.*;
+import model.Member;
+import model.Post;
+import dao.PostDAOImpl;
+
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
+import javax.swing.text.AttributeSet;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
+public class CreatePostFrame extends JDialog {
+    private static final long serialVersionUID = 1L;
+    private Member member;
+    private PostDAOImpl postDAO;
+
+    public interface OnPostCreatedListener {
+        void onPostCreated();
+    }
+
+    private OnPostCreatedListener onPostCreatedListener;
+
+    public void setOnPostCreated(OnPostCreatedListener listener) {
+        this.onPostCreatedListener = listener;
+    }
+
+    public CreatePostFrame(Member member) {
+        super((Frame) null, "게시글 작성", true);
+        this.member = member;
+        this.postDAO = new PostDAOImpl();
+

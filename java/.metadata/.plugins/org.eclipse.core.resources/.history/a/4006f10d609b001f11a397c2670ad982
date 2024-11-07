@@ -1,0 +1,26 @@
+// TestPostView.java
+package main;
+
+import gui.PostViewFrame;
+import model.Post;
+import model.Comment;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class TestPostView {
+    public static void main(String[] args) {
+        // 게시물 생성
+        Post post = new Post("1", "user1", "테스트 게시물 제목", "이것은 테스트 내용입니다.", new Date(), new Date());
+
+        // 댓글 리스트 생성
+        List<Comment> comments = new ArrayList<>();
+        comments.add(new Comment("1", "1", "user2", "첫 번째 댓글입니다.", new Date()));
+        comments.add(new Comment("2", "1", "user3", "두 번째 댓글입니다.", new Date()));
+
+        // 댓글 DAO를 사용하여 댓글 목록을 가져오는 부분을 더미로 처리할 수 있습니다.
+        // PostViewFrame을 호출하여 보기
+        PostViewFrame postViewFrame = new PostViewFrame(post);
+    }
+}

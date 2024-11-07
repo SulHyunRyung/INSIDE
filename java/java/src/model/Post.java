@@ -71,6 +71,7 @@ public class Post {
 		this.updateDate = updateDate;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Post [postId=" + postId + ", pUserId=" + pUserId + ", postTitle=" + postTitle + ", contents=" + contents

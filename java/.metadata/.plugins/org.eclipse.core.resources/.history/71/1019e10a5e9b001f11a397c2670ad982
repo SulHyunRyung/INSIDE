@@ -1,0 +1,31 @@
+package main;
+
+import gui.PostViewFrame;
+import model.Post;
+import model.Comment;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        // 게시글 생성
+        Post post = new Post();
+        post.setPostId("P000001");
+        post.setpUserId("user123");
+        post.setPostTitle("테스트 게시글 제목");
+        post.setContents("이것은 테스트 게시글의 내용입니다.");
+        post.setCreateDate(new Date());
+        post.setUpdateDate(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)); // 수정일자를 작성일자보다 1일 더 나중으로 설정
+
+        // 댓글 데이터 생성
+        List<Comment> comments = new ArrayList<>();
+        comments.add(new Comment("C000001", post.getPostId(), "user456", "첫 번째 댓글입니다.", new Date()));
+        comments.add(new Comment("C000002", post.getPostId(), "user789", "두 번째 댓글입니다.", new Date()));
+        comments.add(new Comment("C000003", post.getPostId(), "user123", "세 번째 댓글입니다.", new Date()));
+
+        // 게시글 보기 창 띄우기
+        PostViewFrame postViewFrame = new PostViewFrame(post);
+    }
+}

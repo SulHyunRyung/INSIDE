@@ -1,0 +1,20 @@
+package util;
+
+import java.security.MessageDigest;
+
+public class PwChk {
+    public static boolean checkPassword(String enteredPw, String storedPw) {
+        // 비밀번호 해시를 비교하는 로직
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(enteredPw.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                hexString.append(String.format("%02x", b));
+            }
+            return hexString.toString().equals(storedPw);  // 입력된 비밀번호 해시와 저장된 비밀번호 해시 비교
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+}

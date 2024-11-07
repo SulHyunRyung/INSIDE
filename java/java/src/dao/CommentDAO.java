@@ -13,4 +13,7 @@ public interface CommentDAO {
 
     // 댓글 조회 메서드
     List<Comment> viewComment(String postId);
+    
+    // USER_NAME 검색
+    String getUserNameById(String userId);
 }

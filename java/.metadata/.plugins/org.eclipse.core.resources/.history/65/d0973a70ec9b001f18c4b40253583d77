@@ -1,0 +1,214 @@
+package gui;
+
+import javax.swing.*;
+import model.Member;
+import dao.MemberDAOImpl;
+import util.UserExists;
+import java.awt.*;
+import java.awt.event.*;
+
+public class RegFrame extends JFrame {
+    private static final long serialVersionUID = 1L;
+    private JTextField userNameField;
+    private JTextField userIdField;
+    private JPasswordField passwordField;
+    private JTextField emailField;
+    private boolean nameWarningShown = false; // 이름 경고 표시 여부 추적
+    private boolean idWarningShown = false;   // 아이디 경고 표시 여부 추적
+    private boolean passwordWarningShown = false; // 비밀번호 경고 표시 여부 추적
+    private boolean emailWarningShown = false; // 이메일 경고 표시 여부 추적
+
+    public RegFrame() {
+        setTitle("회원가입");
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new GridLayout(5, 2));
+
+        userNameField = new JTextField();
+        userIdField = new JTextField();
+        passwordField = new JPasswordField();
+        emailField = new JTextField();
+
+        JButton registerButton = new JButton("회원가입");
+
+        add(new JLabel("이름:"));
+        add(userNameField);
+        add(new JLabel("아이디:"));
+        add(userIdField);
+        add(new JLabel("비밀번호:"));
+        add(passwordField);
+        add(new JLabel("이메일:"));
+        add(emailField);
+        add(registerButton);
+
+        // JTextField에서 ESC 키를 눌렀을 때 이벤트 처리
+        addKeyListenerToComponent(userNameField);
+        addKeyListenerToComponent(userIdField);
+        addKeyListenerToComponent(passwordField);
+        addKeyListenerToComponent(emailField);
+
+        // 전체 JFrame에 KeyListener 추가 (ESC 키 처리)
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    int result = JOptionPane.showConfirmDialog(RegFrame.this,
+                            "정말로 창을 닫으시겠습니까?", "창 닫기 확인",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if (result == JOptionPane.YES_OPTION) {
+                        dispose();  // 창 닫기
+                    }
+                }
+            }
+        });
+
+        // JFrame이 포커스를 받을 수 있도록 설정
+        this.setFocusable(true);
+        this.requestFocusInWindow();
+
+        // 창에 윈도우 종료 이벤트 추가
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int result = JOptionPane.showConfirmDialog(RegFrame.this,
+                        "정말로 창을 닫으시겠습니까?", "창 닫기 확인",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    dispose();  // 창 닫기
+                }
+            }
+        });
+
+        // 이름 타이핑 글자 수 체크
+        userNameField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (userNameField.getText().length() >= 25) {
+                    e.consume();
+                    if (!nameWarningShown) {  // 경고가 표시되지 않은 경우에만 경고 표시
+                        JOptionPane.showMessageDialog(RegFrame.this, "이름은 25글자 이하로 입력해주세요.");
+                        nameWarningShown = true; // 경고 표시 상태로 변경
+                    }
+                    userNameField.requestFocus();  // 포커스를 이름 필드로 설정
+                }
+            }
+        });
+
+        // 아이디 타이핑 글자 수 체크
+        userIdField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (userIdField.getText().length() >= 20) {
+                    e.consume();
+                    if (!idWarningShown) {  // 경고가 표시되지 않은 경우에만 경고 표시
+                        JOptionPane.showMessageDialog(RegFrame.this, "ID는 영 대·소문자, 숫자 조합으로 20자 이하로 입력해주세요.");
+                        idWarningShown = true; // 경고 표시 상태로 변경
+                    }
+                    userIdField.requestFocus();  // 포커스를 아이디 필드로 설정
+                }
+            }
+        });
+
+        // 비밀번호 타이핑 글자 수 체크
+        passwordField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (passwordField.getPassword().length >= 60) {
+                    e.consume();
+                    if (!passwordWarningShown) {  // 경고가 표시되지 않은 경우에만 경고 표시
+                        JOptionPane.showMessageDialog(RegFrame.this, "비밀번호는 60자 이하로 입력해주세요.");
+                        passwordWarningShown = true; // 경고 표시 상태로 변경
+                    }
+                    passwordField.requestFocus();  // 포커스를 비밀번호 필드로 설정
+                }
+            }
+        });
+
+        // 이메일 타이핑 글자 수 체크
+        emailField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (emailField.getText().length() >= 50) {
+                    e.consume();
+                    if (!emailWarningShown) {  // 경고가 표시되지 않은 경우에만 경고 표시
+                        JOptionPane.showMessageDialog(RegFrame.this, "이메일은 50자 이하로 입력해주세요.");
+                        emailWarningShown = true; // 경고 표시 상태로 변경
+                    }
+                    emailField.requestFocus();  // 포커스를 이메일 필드로 설정
+                }
+            }
+        });
+
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 회원가입 전에 모든 필드의 길이를 체크
+                String userName = userNameField.getText().trim();
+                String userId = userIdField.getText().trim();
+                String password = new String(passwordField.getPassword()).trim();
+                String email = emailField.getText().trim();
+
+                if (userName.length() > 25) {
+                    JOptionPane.showMessageDialog(RegFrame.this, "이름은 25글자 이하로 입력해주세요.");
+                    userNameField.requestFocus();  // 포커스를 이름 필드로 설정
+                    return;
+                }
+                if (userId.length() > 20) {
+                    JOptionPane.showMessageDialog(RegFrame.this, "ID는 영 대·소문자, 숫자 조합으로 20자 이하로 입력해주세요.");
+                    userIdField.requestFocus();  // 포커스를 아이디 필드로 설정
+                    return;
+                }
+                if (password.length() > 60) {
+                    JOptionPane.showMessageDialog(RegFrame.this, "비밀번호는 60자 이하로 입력해주세요.");
+                    passwordField.requestFocus();  // 포커스를 비밀번호 필드로 설정
+                    return;
+                }
+                if (email.length() > 50) {
+                    JOptionPane.showMessageDialog(RegFrame.this, "이메일은 50자 이하로 입력해주세요.");
+                    emailField.requestFocus();  // 포커스를 이메일 필드로 설정
+                    return;
+                }
+
+                registerMember();
+            }
+        });
+
+        setVisible(true);  // 화면 표시
+    }
+
+    // 회원가입 처리 메소드 (예시)
+    private void registerMember() {
+        String userName = userNameField.getText();
+        String userId = userIdField.getText();
+        String password = new String(passwordField.getPassword());
+        String email = emailField.getText();
+
+        // 회원가입 처리 로직
+        // 예: 데이터베이스에 회원 정보를 저장하는 코드 추가
+        JOptionPane.showMessageDialog(this, "회원가입이 완료되었습니다.");
+        dispose();  // 창 닫기
+    }
+
+    // 각 JTextField에 KeyListener 추가
+    private void addKeyListenerToComponent(JComponent component) {
+        component.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    int result = JOptionPane.showConfirmDialog(RegFrame.this,
+                            "정말로 창을 닫으시겠습니까?", "창 닫기 확인",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if (result == JOptionPane.YES_OPTION) {
+                        dispose();  // 창 닫기
+                    }
+                }
+            }
+        });
+    }
+
+    // 테스트 실행 메소드
+    public static void main(String[] args) {
+        new RegFrame();
+    }
+}

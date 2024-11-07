@@ -1,0 +1,35 @@
+package main;
+
+import gui.PostViewFrame;
+import model.Post;
+
+import java.util.Calendar;
+import java.util.Date;
+
+public class Main {
+    public static void main(String[] args) {
+        Post testPost = new Post();
+        testPost.setPostTitle("테스트 게시물 제목");
+        testPost.setContents("여기는 테스트 게시물의 본문 내용입니다. 내용이 잘 표시되는지 확인합니다. 이 내용은 스크롤이 생길 만큼 길어야 합니다. "
+                + "본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다. "
+                + "본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다. "
+                + "본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다.""여기는 테스트 게시물의 본문 내용입니다. 내용이 잘 표시되는지 확인합니다. 이 내용은 스크롤이 생길 만큼 길어야 합니다. "
+                + "본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다. "
+                + "본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다. "
+                + "본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다. 본문 내용이 잘 표시되는지 확인합니다.");
+        testPost.setpUserId("user123"); // 게시물 작성자 ID
+
+        // 작성일자 설정
+        Date createDate = new Date(); // 현재 시간
+        testPost.setCreateDate(createDate);
+
+        // 수정일자는 작성일자보다 1일 더 많게 설정
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(createDate);
+        calendar.add(Calendar.DATE, 1); // 1일 추가
+        testPost.setUpdateDate(calendar.getTime());
+
+        // PostViewFrame 열기
+        new PostViewFrame(testPost);
+    }
+}

@@ -1,0 +1,327 @@
+package gui;
+
+import model.Member;
+import model.Post;
+import dao.PostDAO;
+import dao.PostDAOImpl;
+import util.LogoutEvent;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+public class BoardFrame extends JFrame {
+	private static final long serialVersionUID = 1L;
+	private PostDAO postDAO; // PostDAO 필드 추가
+	private JPanel postPanel; // 게시글 패널 필드 추가
+	private Member member; // 현재 사용자 정보를 저장할 필드 추가
+	private int currentPage = 1; // 현재 페이지 추가
+	private static final int PAGE_SIZE = 5; // 페이지 당 게시글 수
+	private int totalPages;
+
+	public BoardFrame(Member member) {
+		this.member = member; // 현재 사용자 정보 저장
+		setTitle("게시판");
+		setSize(800, 600);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(null);
+		setResizable(false);
+
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout(10, 10));
+
+		// 상단 패널
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new BorderLayout());
+
+		// 로고 이미지 설정
+		ImageIcon logoIcon = new ImageIcon("../../img/logo.png");
+		Image img = logoIcon.getImage();
+		Image newImg = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+		JLabel logoLabel = new JLabel(new ImageIcon(newImg));
+
+		// 제목 레이블
+		JLabel titleLabel = new JLabel("게시판", SwingConstants.CENTER);
+		titleLabel.setFont(new Font("굴림", Font.BOLD, 24));
+
+		// 인사말 레이블 및 로그아웃 버튼 패널
+		JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JLabel greetingLabel = new JLabel(member.getUserName() + "님", SwingConstants.RIGHT);
+		greetingLabel.setFont(new Font("굴림", Font.BOLD, 16));
+
+		// 로그아웃 버튼 생성 및 클릭 이벤트 처리
+		JButton logoutButton = new JButton("로그아웃");
+		logoutButton.addActionListener(new LogoutEvent(this, member.getUserName())); // LogoutEvent 연결
+
+		// 사용자 패널 구성
+		userPanel.add(greetingLabel);
+		userPanel.add(logoutButton);
+
+		// 상단 패널 구성
+		topPanel.add(logoLabel, BorderLayout.WEST);
+		topPanel.add(titleLabel, BorderLayout.CENTER);
+		topPanel.add(userPanel, BorderLayout.EAST);
+
+		mainPanel.add(topPanel, BorderLayout.NORTH);
+
+		// 게시글 목록 패널 초기화
+		postPanel = new JPanel();
+		postPanel.setLayout(new GridLayout(0, 1));
+
+		// 게시글 DAO 초기화
+		postDAO = new PostDAOImpl();
+
+		loadPosts(currentPage, PAGE_SIZE); // 첫 번째 페이지, 5개 게시글 가져오기
+
+		JScrollPane scrollPane = new JScrollPane(postPanel);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder()); // 테두리 제거
+		mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+		// 내비게이션 버튼 패널
+		JPanel navPanel = new JPanel();
+		JButton previousButton = new JButton("이전");
+		JButton nextButton = new JButton("다음");
+
+		previousButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (currentPage == 1) {
+					JOptionPane.showMessageDialog(BoardFrame.this, "첫 번째 페이지입니다."); // 경고 메시지
+				} else {
+					currentPage--; // 이전 페이지로 이동
+					refreshPostList();
+				}
+			}
+		});
+
+		nextButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (currentPage == totalPages) {
+					JOptionPane.showMessageDialog(BoardFrame.this, "마지막 페이지입니다."); // 경고 메시지
+				} else {
+					currentPage++; // 다음 페이지로 이동
+					refreshPostList();
+				}
+			}
+		});
+
+		navPanel.add(previousButton);
+		navPanel.add(nextButton);
+
+		// 버튼 패널
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new FlowLayout());
+
+		JButton createPostButton = new JButton("게시글 작성");
+		JButton updatePostButton = new JButton("게시글 수정");
+		JButton deletePostButton = new JButton("게시글 삭제");
+		JButton myPostsButton = new JButton("내 게시물 보기"); // 내 게시물 보기 버튼 추가
+
+		// 게시글 작성 버튼
+		createPostButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new CreatePostFrame(member, BoardFrame.this); // 수정: BoardFrame 참조 추가
+			}
+		});
+
+		// 게시글 삭제 버튼
+		deletePostButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedCount = getSelectedPostCount(); // 선택된 게시글 수
+
+				if (selectedCount > 0) {
+					int response = JOptionPane.showConfirmDialog(BoardFrame.this,
+							String.format("%d개의 게시글을 삭제하시겠습니까?", selectedCount), "삭제 확인", JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE);
+
+					if (response == JOptionPane.YES_OPTION) {
+						deleteSelectedPosts(); // 체크된 게시글 삭제
+						JOptionPane.showMessageDialog(BoardFrame.this, "게시글이 삭제되었습니다."); // 삭제 완료 메시지
+						refreshPostList(); // 삭제 후 게시글 목록 새로 고침
+					}
+				} else {
+					JOptionPane.showMessageDialog(BoardFrame.this, "삭제할 게시글을 선택해주세요."); // 선택 안내 메시지
+				}
+			}
+		});
+
+		// 내 게시물 보기 버튼 클릭 이벤트
+		myPostsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				currentPage = 1; // 페이지를 첫 번째로 초기화
+				loadMyPosts(); // 현재 사용자 게시물 로드
+			}
+		});
+
+		buttonPanel.add(createPostButton);
+		buttonPanel.add(updatePostButton);
+		buttonPanel.add(deletePostButton);
+		buttonPanel.add(myPostsButton); // 내 게시물 보기 버튼 추가
+
+		// 내비게이션 패널과 버튼 패널을 하나의 패널에 추가
+		JPanel actionPanel = new JPanel();
+		actionPanel.setLayout(new BorderLayout());
+		actionPanel.add(navPanel, BorderLayout.NORTH); // 내비게이션 패널 추가
+		actionPanel.add(buttonPanel, BorderLayout.SOUTH); // 버튼 패널 추가
+
+		mainPanel.add(actionPanel, BorderLayout.SOUTH); // 전체 패널을 mainPanel의 하단에 추가
+
+		// 전체 패널을 JFrame에 추가
+		add(mainPanel);
+		setVisible(true);
+
+		// ESC = 창 닫기 Click Trigger
+		InputMap inputMap = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = mainPanel.getActionMap();
+
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "closeAction");
+		actionMap.put("closeAction", new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose(); // 현재 창 닫기
+			}
+		});
+	}
+
+	public void loadPosts(int pageNumber, int pageSize) {
+		postPanel.removeAll(); // 기존 게시글 제거
+		List<Post> posts = postDAO.getAllPosts(pageNumber, pageSize); // 게시글 목록 로드
+
+		int totalPosts = postDAO.getTotalPosts(); // 전체 게시글 수 가져오기
+		totalPages = (int) Math.ceil((double) totalPosts / pageSize); // 총 페이지 수 계산
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+		// 게시글 추가
+		for (Post post : posts) {
+			String postTitle = String.format("  [작성자 : %s]    %s", post.getpUserId(), post.getPostTitle());
+			String postDate = dateFormat.format(post.getCreateDate());
+
+			// 날짜 레이블 (HTML을 사용하여 공백 추가)
+			JLabel dateLabel = new JLabel("<html>" + postDate + "&nbsp;&nbsp;&nbsp;</html>", SwingConstants.RIGHT);
+			dateLabel.setPreferredSize(new Dimension(200, 20)); // 날짜 레이블의 너비를 설정
+
+			// 체크박스
+			JCheckBox checkBox = new JCheckBox();
+			checkBox.setActionCommand(post.getPostId()); // POST_ID를 체크박스의 액션 커맨드로 설정
+
+			// 체크박스 선택 리스너 추가
+			checkBox.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (!post.getpUserId().equals(member.getUserId()) && checkBox.isSelected()) {
+						checkBox.setSelected(false); // 체크박스 선택 해제
+						JOptionPane.showMessageDialog(BoardFrame.this, "자신의 게시글만 수정 및 삭제를 할 수 있습니다."); // 경고 메시지
+					}
+				}
+			});
+
+			// 제목 클릭 리스너
+			JLabel titleLabel = new JLabel(postTitle);
+			titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			titleLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+				@Override
+				public void mouseClicked(java.awt.event.MouseEvent evt) {
+					new PostViewFrame(post, member);
+				}
+			});
+			titleLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+				@Override
+				public void mouseEntered(java.awt.event.MouseEvent evt) {
+					titleLabel.setForeground(Color.BLUE); // mouseEnter
+				}
+
+				@Override
+				public void mouseExited(java.awt.event.MouseEvent evt) {
+					titleLabel.setForeground(Color.BLACK); // mouseLeave
+				}
+
+			});
+
+			// 게시글 패널에 추가
+			JPanel postItemPanel = new JPanel(new BorderLayout());
+			postItemPanel.add(checkBox, BorderLayout.WEST); // 체크박스 추가
+			postItemPanel.add(titleLabel, BorderLayout.CENTER); // 제목 추가
+			postItemPanel.add(dateLabel, BorderLayout.EAST); // 날짜 추가
+
+			postPanel.add(postItemPanel); // 전체 게시글 패널에 추가
+		}
+
+		postPanel.revalidate(); // 패널 재검증
+		postPanel.repaint(); // 패널 다시 그리기
+	}
+
+	public void refreshPostList() {
+		loadPosts(currentPage, PAGE_SIZE); // 현재 페이지의 게시글 로드
+	}
+
+	private int getSelectedPostCount() {
+		int count = 0;
+		for (Component component : postPanel.getComponents()) {
+			if (component instanceof JPanel) {
+				JPanel postItemPanel = (JPanel) component;
+				JCheckBox checkBox = (JCheckBox) postItemPanel.getComponent(0); // 체크박스는 항상 첫 번째 컴포넌트
+				if (checkBox.isSelected()) {
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+
+	private void deleteSelectedPosts() {
+		for (Component component : postPanel.getComponents()) {
+			if (component instanceof JPanel) {
+				JPanel postItemPanel = (JPanel) component;
+				JCheckBox checkBox = (JCheckBox) postItemPanel.getComponent(0); // 체크박스는 항상 첫 번째 컴포넌트
+				if (checkBox.isSelected()) {
+					String postId = checkBox.getActionCommand(); // POST_ID 가져오기
+					postDAO.deletePost(postId); // 게시글 삭제
+				}
+			}
+		}
+	}
+
+	private void loadMyPosts() {
+		postPanel.removeAll(); // 기존 게시글 제거
+		List<Post> myPosts = postDAO.getPostsByCurrentUser(member.getUserId()); // 현재 사용자의 게시글 가져오기
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+		for (Post post : myPosts) {
+			String postTitle = String.format("  [작성자 : %s]    %s", post.getpUserId(), post.getPostTitle());
+			String postDate = dateFormat.format(post.getCreateDate());
+
+			JLabel dateLabel = new JLabel("<html>" + postDate + "&nbsp;&nbsp;&nbsp;</html>", SwingConstants.RIGHT);
+			dateLabel.setPreferredSize(new Dimension(200, 20)); // 날짜 레이블의 너비를 설정
+
+			JLabel titleLabel = new JLabel(postTitle);
+			titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			titleLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+				@Override
+				public void mouseClicked(java.awt.event.MouseEvent evt) {
+					// 클릭 시 PostViewFrame 열기
+					new PostViewFrame(post);
+				}
+			});
+
+			JPanel postItemPanel = new JPanel(new BorderLayout());
+			postItemPanel.add(titleLabel, BorderLayout.CENTER); // 제목 추가
+			postItemPanel.add(dateLabel, BorderLayout.EAST); // 날짜 추가
+
+			postPanel.add(postItemPanel); // 전체 게시글 패널에 추가
+		}
+
+		postPanel.revalidate(); // 패널 재검증
+		postPanel.repaint(); // 패널 다시 그리기
+	}
+}

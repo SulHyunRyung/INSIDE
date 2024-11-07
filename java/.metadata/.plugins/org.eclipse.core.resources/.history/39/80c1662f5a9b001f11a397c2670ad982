@@ -1,0 +1,42 @@
+package main;
+
+import gui.PostViewFrame;
+import model.Post;
+
+public class Main {
+    public static void main(String[] args) {
+        Post testPost = new Post();
+        testPost.setPostTitle("테스트 게시물 제목");
+        testPost.setContents("여기는 테스트 게시물의 본문 내용입니다.\n"
+                + "이것은 스크롤이 생기는지 확인하기 위한 더 많은 내용을 추가하는 예시입니다.\n"
+                + "본문 내용이 많아져야 스크롤이 생깁니다.\n\n"
+                + "이곳에 내용이 계속 추가됩니다.\n"
+                + "여기에 추가적인 텍스트를 삽입하여 길이를 늘려줍니다.\n"
+                + "이것은 샘플 텍스트입니다.\n"
+                + "추가적인 내용:\n"
+                + "1. 내용 1\n"
+                + "2. 내용 2\n"
+                + "3. 내용 3\n"
+                + "4. 내용 4\n"
+                + "5. 내용 5\n"
+                + "6. 내용 6\n"
+                + "7. 내용 7\n"
+                + "8. 내용 8\n"
+                + "9. 내용 9\n"
+                + "10. 내용 10\n"
+                + "11. 내용 11\n"
+                + "12. 내용 12\n"
+                + "13. 내용 13\n"
+                + "14. 내용 14\n"
+                + "15. 내용 15\n"
+                + "16. 내용 16\n"
+                + "17. 내용 17\n"
+                + "18. 내용 18\n"
+                + "19. 내용 19\n"
+                + "20. 내용 20\n"
+                + "이런 식으로 내용을 계속 추가하여 본문이 길어지도록 해주세요.");
+
+        // PostViewFrame 열기
+        new PostViewFrame(testPost);
+    }
+}

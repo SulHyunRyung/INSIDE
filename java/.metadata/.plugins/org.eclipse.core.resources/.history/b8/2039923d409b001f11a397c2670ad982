@@ -1,0 +1,101 @@
+// CreatePostFrame.java
+package gui;
+
+import util.UserValidation;
+import javax.swing.*;
+import model.Member;
+import model.Post;
+import dao.PostDAOImpl;
+
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
+import javax.swing.text.AttributeSet;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
+public class CreatePostFrame extends JDialog {
+	private static final long serialVersionUID = 1L;
+	private Member member;
+	private PostDAOImpl postDAO;
+	private BoardFrame boardFrame; // BoardFrame 참조 추가
+
+	public CreatePostFrame(Member member, BoardFrame boardFrame) { // BoardFrame 인자 추가
+		super((Frame) null, "게시글 작성", true);
+		this.member = member;
+		this.boardFrame = boardFrame; // BoardFrame 인스턴스 저장
+		postDAO = new PostDAOImpl();
+
+		setSize(400, 300);
+		setLocationRelativeTo(null);
+		setResizable(false);
+
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout(10, 10));
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		// 제목 필드
+		JTextField titleField = new JTextField(30);
+		titleField.setDocument(new PlainDocument() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+				if ((getLength() + str.length()) <= 50) { // 제목 최대 50자 제한
+					super.insertString(offset, str, attr);
+				}
+			}
+		});
+
+		// 내용 필드
+		JTextArea contentArea = new JTextArea(10, 30);
+		contentArea.setLineWrap(true);
+		contentArea.setWrapStyleWord(true);
+
+		// 등록 버튼
+		JButton submitButton = new JButton("등록");
+		submitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String title = titleField.getText();
+				String contents = contentArea.getText();
+
+				// 유효성 검사
+				if (!UserValidation.isValidPostTitle(title) || !UserValidation.isValidPostContent(contents)) {
+					JOptionPane.showMessageDialog(mainPanel, "제목과 내용을 확인해주세요.");
+					return;
+				}
+
+				Post post = new Post(title, contents, member.getUserId());
+				if (postDAO.createPost(post)) {
+					JOptionPane.showMessageDialog(mainPanel, "게시글이 작성되었습니다.");
+					boardFrame.loadPosts(1, 5); // 작성 후 게시글 새로고침
+					dispose(); // 창 닫기
+				} else {
+					JOptionPane.showMessageDialog(mainPanel, "게시글 작성에 실패했습니다.");
+				}
+			}
+		});
+
+		// 레이아웃 설정
+		JPanel titlePanel = new JPanel(new BorderLayout());
+		titlePanel.add(new JLabel("제목:"), BorderLayout.WEST);
+		titlePanel.add(titleField, BorderLayout.CENTER);
+
+		JPanel contentPanel = new JPanel(new BorderLayout());
+		contentPanel.add(new JLabel("내용:"), BorderLayout.NORTH);
+		contentPanel.add(new JScrollPane(contentArea), BorderLayout.CENTER);
+
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(submitButton);
+
+		mainPanel.add(titlePanel, BorderLayout.NORTH);
+		mainPanel.add(contentPanel, BorderLayout.CENTER);
+		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+		add(mainPanel);
+		setVisible(true);
+	}
+}

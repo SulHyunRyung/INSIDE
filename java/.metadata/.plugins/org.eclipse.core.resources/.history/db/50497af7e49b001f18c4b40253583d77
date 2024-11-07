@@ -1,0 +1,128 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import model.Comment;
+import util.DBconn;
+import util.OracleQuery;
+
+public class CommentDAOImpl implements CommentDAO {
+
+	@Override
+	public boolean writeComment(Comment comment) {
+	    String sqlInsert = "INSERT INTO " + OracleQuery.COMMENT_TABLE + " (" +
+	            OracleQuery.COL_COMMENT_ID + ", " +
+	            OracleQuery.COL_C_POST_ID + ", " +
+	            OracleQuery.COL_C_USER_ID + ", " +
+	            OracleQuery.COL_COMMENT + ", " +
+	            OracleQuery.COL_WRITE_DATE + ") " +
+	            "VALUES ('C' || LPAD(COMMENT_SEQ.NEXTVAL, 6, '0'), ?, ?, ?, SYSDATE)";
+
+	    try (Connection conn = DBconn.connectDB();
+	         PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
+	         
+	        conn.setAutoCommit(false);
+
+	        pstmt.setString(1, comment.getcPostId()); // FK POST_LIST POST_ID
+	        pstmt.setString(2, comment.getcUserId()); // FK MEMBER_LIST USER_ID
+	        pstmt.setString(3, comment.getComment()); 
+
+	        int result = pstmt.executeUpdate();
+
+	        if (result > 0) {
+	        	conn.commit(); 
+	        	return true;
+		    } else {
+		        conn.rollback(); 
+		        return false; 
+		    }
+	    } catch (SQLException e) {
+	        e.printStackTrace(); 
+	        return false; 
+	    }
+	} // End writeComment 
+
+	@Override
+	public boolean deleteComment(String commentId) {
+	    String sqlDelete = "DELETE FROM " + OracleQuery.COMMENT_TABLE + " WHERE " + 
+	                        OracleQuery.COL_COMMENT_ID + " = ?";
+
+	    try (Connection conn = DBconn.connectDB();
+	         PreparedStatement pstmt = conn.prepareStatement(sqlDelete)) {
+	        
+	        conn.setAutoCommit(false); 
+	        pstmt.setString(1, commentId);
+
+	        int result = pstmt.executeUpdate();
+
+	        if (result > 0) {
+	            conn.commit();
+	            return true;
+	        } else {
+	            conn.rollback();
+	            return false; 
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
+	@Override
+	public List<Comment> viewComment(String postId) {
+	    List<Comment> comments = new ArrayList<>();
+	    String sqlSelect = "SELECT COMMENT_ID, C_POST_ID, C_USER_ID, \"COMMENT\" AS COMMENT_TEXT, WRITE_DATE " +
+                "FROM COMMENT_LIST " +
+                "WHERE C_POST_ID = ? " +
+                "ORDER BY WRITE_DATE ASC";
+
+
+	    try (Connection conn = DBconn.connectDB();
+	         PreparedStatement pstmt = conn.prepareStatement(sqlSelect)) {
+	        
+	        pstmt.setString(1, postId); 
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            while (rs.next()) {
+	                Comment comment = new Comment();
+	                comment.setCommentId(rs.getString(OracleQuery.COL_COMMENT_ID));
+	                comment.setcPostId(rs.getString(OracleQuery.COL_C_POST_ID));
+	                comment.setcUserId(rs.getString(OracleQuery.COL_C_USER_ID));    
+	                comment.setComment(rs.getString("COMMENT_TEXT"));
+	                comment.setWriteDate(rs.getTimestamp(OracleQuery.COL_WRITE_DATE));
+	                comments.add(comment); 
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return comments;
+	}
+
+    @Override
+    public String getUserNameById(String userId) {
+        String userName = null;
+        String sql = "SELECT " + OracleQuery.COL_USER_NAME + 
+                " FROM " + OracleQuery.MEMBER_TABLE + 
+                " WHERE " + OracleQuery.COL_USER_ID + " = ?";
+        try (Connection conn = DBconn.connectDB();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                userName = rs.getString(OracleQuery.COL_USER_NAME);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userName;
+    }
+
+
+}

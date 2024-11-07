@@ -1,0 +1,19 @@
+package main;
+
+import gui.PostViewFrame;
+import model.Post;
+
+public class Main {
+    public static void main(String[] args) {
+        // 더미 게시물 생성 및 설정
+        Post testPost = new Post();
+        testPost.setPostTitle("테스트 게시물 제목");
+        testPost.setContents("여기는 테스트 게시물의 본문 내용입니다. 내용이 잘 표시되는지 확인합니다.");
+        testPost.setpUserId("user123"); // 게시물 작성자 ID
+        testPost.setCreateDate("2024-11-05"); // 게시물 작성일자 설정
+        testPost.setUpdateDate("2024-11-06"); // 게시물 수정일자 설정
+
+        // PostViewFrame 열기
+        new PostViewFrame(testPost);
+    }
+}

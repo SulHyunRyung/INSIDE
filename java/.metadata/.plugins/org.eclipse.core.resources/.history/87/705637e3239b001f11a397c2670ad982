@@ -1,0 +1,156 @@
+package gui;
+
+import model.Member;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+public class MainFrame extends JFrame {
+    private static final long serialVersionUID = 1L;
+    private BoardFrame boardFrame; // 게시판 프레임을 위한 멤버 변수
+    private JButton logoutButton; // 로그아웃 버튼을 위한 멤버 변수
+
+    public MainFrame(Member member) {
+        // 메인 프레임 설정
+        setTitle("Main Window");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
+
+        // 메인 패널 생성 및 레이아웃 설정
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout(10, 10)); 
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // 상단 패널: 로고 및 사용자 정보를 포함
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BorderLayout());
+
+        // 로고 이미지 설정
+        ImageIcon logoIcon = new ImageIcon("../../img/logo.png"); 
+        Image img = logoIcon.getImage();
+        Image newImg = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        JLabel logoLabel = new JLabel(new ImageIcon(newImg));
+        
+        topPanel.add(logoLabel, BorderLayout.WEST); // 로고를 상단 패널에 추가
+
+        // 사용자 정보 및 로그아웃 버튼 패널
+        JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JLabel greetingLabel = new JLabel(member.getUserName() + "님 안녕하세요."); // 인사말 레이블
+        logoutButton = new JButton("로그아웃"); // 로그아웃 버튼 생성
+
+        // 로그아웃 버튼 클릭 이벤트 처리
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int response = JOptionPane.showConfirmDialog(MainFrame.this, "정말 로그아웃 하시겠습니까?", "로그아웃 확인", JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                    JOptionPane.showMessageDialog(null, "안녕히 가세요.\n" + member.getUserName() + "님.", "로그아웃", JOptionPane.INFORMATION_MESSAGE);
+                    if (boardFrame != null) {
+                        boardFrame.dispose(); // 열린 게시판 프레임이 있으면 닫기
+                    }
+                    dispose(); // 메인 프레임 닫기
+                }
+            }
+        });
+        
+        userPanel.add(greetingLabel); // 사용자 인사말 추가
+        userPanel.add(logoutButton); // 로그아웃 버튼 추가
+        
+        topPanel.add(userPanel, BorderLayout.CENTER); // 사용자 패널을 상단 패널에 추가
+        
+        mainPanel.add(topPanel, BorderLayout.NORTH); // 메인 패널에 상단 패널 추가
+
+        // 중앙 패널: 게시물 목록 및 버튼 패널
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        // 게시물 목록을 위한 패널
+        JPanel boardPanel = new JPanel();
+        boardPanel.setLayout(new GridLayout(0, 1)); // 여러 개의 게시물 레이블을 수직으로 배치
+        boardPanel.setBorder(BorderFactory.createEmptyBorder()); 
+
+        for (int i = 1; i <= 5; i++) {
+            boardPanel.add(new JLabel("게시물 " + i)); // 게시물 레이블 추가
+        }
+
+        // 게시물 목록을 스크롤할 수 있는 스크롤 패널
+        JScrollPane scrollPane = new JScrollPane(boardPanel);
+        scrollPane.setPreferredSize(new Dimension(400, 200)); 
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        centerPanel.add(scrollPane, gbc); // 스크롤 패널을 중앙 패널에 추가
+
+        // 버튼 패널: 회원 정보 수정, 친구 목록, 게시판 이동 버튼
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridBagLayout());
+
+        JButton editInfoButton = new JButton("회원 정보 수정"); // 회원 정보 수정 버튼
+        JButton friendListButton = new JButton("친구 목록"); // 친구 목록 버튼
+        JButton boardMoveButton = new JButton("게시판"); // 게시판으로 이동 버튼
+        
+        Dimension buttonSize = new Dimension(180, 40);
+        editInfoButton.setPreferredSize(buttonSize); // 버튼 크기 설정
+        friendListButton.setPreferredSize(buttonSize);
+        boardMoveButton.setPreferredSize(buttonSize);
+
+        // 회원 정보 수정 버튼 클릭 이벤트 처리
+        editInfoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new UserChk(MainFrame.this, member).setVisible(true); // 회원 정보 수정 프레임 열기
+            }
+        });
+
+        // 게시판으로 이동 버튼 기능
+        boardMoveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boardFrame = new BoardFrame(member); 
+                boardFrame.setVisible(true); 
+            }
+        });
+
+        // 버튼 패널에 버튼 추가
+        GridBagConstraints btnGbc = new GridBagConstraints();
+        btnGbc.gridx = 0;
+        btnGbc.gridy = 0;
+        btnGbc.insets = new Insets(10, 15, 25, 0);
+        buttonPanel.add(editInfoButton, btnGbc); 
+        
+        btnGbc.gridy = 1;
+        buttonPanel.add(friendListButton, btnGbc); 
+        
+        btnGbc.gridy = 2;
+        buttonPanel.add(boardMoveButton, btnGbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        centerPanel.add(buttonPanel, gbc); 
+
+        mainPanel.add(centerPanel, BorderLayout.CENTER); 
+        
+        add(mainPanel);
+        pack();
+        setVisible(true);
+
+        // ESC = 로그아웃 Click Trigger
+        InputMap inputMap = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = mainPanel.getActionMap();
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "logoutAction"); 
+        actionMap.put("logoutAction", new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                logoutButton.doClick();
+            }
+        });
+    } // End MainFrame
+}

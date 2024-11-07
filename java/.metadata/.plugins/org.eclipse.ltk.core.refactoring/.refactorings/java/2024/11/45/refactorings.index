@@ -1,2 +1,10 @@
 1730613224532	Rename type 'OverlapChk'
 1730613251505	Rename type 'userExists'
+1730773981991	Rename type 'CreatePost'
+1730774361714	Encapsulate field 'member'
+1730801287678	Rename type 'CommnetDAOImpl'
+1730801888121	Rename field 'COL_COMMNET'
+1730802828135	Rename type 'PostViewFrame'
+1730803943507	Delete element
+1730804044378	Delete element
+1730870075080	Encapsulate field 'member'

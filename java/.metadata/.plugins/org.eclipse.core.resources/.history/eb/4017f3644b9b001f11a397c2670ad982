@@ -1,0 +1,99 @@
+package gui;
+
+import model.Member;
+import model.Post;
+import dao.PostDAO;
+import dao.PostDAOImpl;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class CreatePostFrame extends JFrame {
+    private static final long serialVersionUID = 1L;
+    private JTextField titleField; // 제목 입력 필드
+    private JTextArea contentArea; // 내용 입력 필드
+    private Member member; // 현재 사용자 정보
+    private BoardFrame boardFrame; // 게시판 프레임 참조
+
+    public CreatePostFrame(Member member, BoardFrame boardFrame) {
+        this.member = member; // 현재 사용자 정보
+        this.boardFrame = boardFrame; // 게시판 프레임 참조
+
+        setTitle("게시글 작성");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // 제목 패널
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        titlePanel.add(new JLabel("제목: "));
+        titleField = new JTextField(20);
+        titlePanel.add(titleField);
+
+        // 내용 패널
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        contentPanel.add(new JLabel("내용: "), BorderLayout.NORTH);
+        contentArea = new JTextArea(10, 30);
+        JScrollPane scrollPane = new JScrollPane(contentArea);
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // 버튼 패널
+        JPanel buttonPanel = new JPanel();
+        JButton submitButton = new JButton("제출");
+        JButton cancelButton = new JButton("취소");
+
+        // 제출 버튼 클릭 이벤트
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String title = titleField.getText().trim();
+                String content = contentArea.getText().trim();
+
+                if (title.isEmpty() || content.isEmpty()) {
+                    JOptionPane.showMessageDialog(CreatePostFrame.this, "제목과 내용을 모두 입력하세요."); // 입력 안내 메시지
+                    return;
+                }
+
+                // 게시글 객체 생성
+                Post post = new Post();
+                post.setPostTitle(title);
+                post.setPostContent(content);
+                post.setpUserId(member.getUserId());
+
+                // DAO를 통해 게시글 저장
+                PostDAO postDAO = new PostDAOImpl();
+                postDAO.createPost(post);
+
+                // 게시글 작성 후 목록 갱신
+                boardFrame.loadPosts(1, 5); // 게시글 목록 갱신
+                dispose(); // 현재 창 닫기
+            }
+        });
+
+        // 취소 버튼 클릭 이벤트
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // 현재 창 닫기
+            }
+        });
+
+        buttonPanel.add(submitButton);
+        buttonPanel.add(cancelButton);
+
+        // 패널에 추가
+        mainPanel.add(titlePanel, BorderLayout.NORTH);
+        mainPanel.add(contentPanel, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        add(mainPanel);
+        setVisible(true);
+    }
+}

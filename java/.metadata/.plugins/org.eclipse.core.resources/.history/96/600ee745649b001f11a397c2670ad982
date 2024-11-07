@@ -1,0 +1,18 @@
+// TestPostView.java
+package main;
+
+import gui.PostViewFrameEx;
+import model.Post;
+
+import java.util.Date;
+
+public class TestPostView {
+    public static void main(String[] args) {
+        // 게시물 생성
+        // POST_ID, USER_ID, TITLE, CONTENT, CREATE_DATE, UPDATE_DATE
+        Post post = new Post("1", "user1", "테스트 게시물 제목", "이것은 테스트 내용입니다.", new Date(), new Date());
+
+        // PostViewFrame을 호출하여 게시물 보기
+        PostViewFrameEx postViewFrame = new PostViewFrameEx(post);
+    }
+}

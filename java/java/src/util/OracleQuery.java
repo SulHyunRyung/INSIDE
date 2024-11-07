@@ -25,7 +25,7 @@ public interface OracleQuery {
 	public static final String COL_COMMENT_ID = "COMMENT_ID";
 	public static final String COL_C_POST_ID = "C_POST_ID";
 	public static final String COL_C_USER_ID = "C_USER_ID";
-	public static final String COL_COMMNET = "COMMENT";
+	public static final String COL_COMMENT = "\"COMMENT\""; 
 	public static final String COL_WRITE_DATE = "WRITE_DATE";
 
 	// FRIEND_LIST QUERY

@@ -1,0 +1,71 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import dao.MemberDAOImpl;
+import util.PwChk;
+
+public class LoginFrame extends JFrame {
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton loginButton;
+    private MemberDAOImpl memberDAO;  // MemberDAO 객체
+
+    public LoginFrame() {
+        setTitle("로그인");
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // UI 구성
+        usernameField = new JTextField(20);
+        passwordField = new JPasswordField(20);
+        loginButton = new JButton("로그인");
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2));
+        panel.add(new JLabel("아이디:"));
+        panel.add(usernameField);
+        panel.add(new JLabel("비밀번호:"));
+        panel.add(passwordField);
+        panel.add(loginButton);
+
+        add(panel);
+
+        // 로그인 버튼 클릭 시 이벤트 처리
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                login();
+            }
+        });
+
+        memberDAO = new MemberDAOImpl();  // DAO 객체 초기화
+    }
+
+    private void login() {
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+
+        // DB에서 사용자 정보 가져오기
+        String storedHashedPassword = memberDAO.getPasswordByUsername(username);
+
+        // 비밀번호 검증
+        if (storedHashedPassword != null && PwChk.checkPassword(password, storedHashedPassword)) {
+            // 비밀번호가 일치하면 로그인 성공
+            JOptionPane.showMessageDialog(this, "로그인 성공");
+            // 이후 추가적인 로직 (예: MainFrame 열기)
+        } else {
+            // 비밀번호 불일치
+            JOptionPane.showMessageDialog(this, "아이디 또는 비밀번호가 잘못되었습니다.");
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new LoginFrame().setVisible(true);
+            }
+        });
+    }
+}

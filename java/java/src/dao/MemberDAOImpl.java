@@ -54,23 +54,17 @@ public class MemberDAOImpl implements MemberDAO {
     public boolean updateMember(Member member) { 
         String sqlUpdate = "UPDATE " +
                 OracleQuery.MEMBER_TABLE + " SET " +
-                OracleQuery.COL_USER_NAME + " = ?, " +
                 OracleQuery.COL_USER_PW + " = ?, " +
                 OracleQuery.COL_USER_EMAIL + " = ?, " +
                 OracleQuery.COL_INFO_UPDATE_DATE + " = SYSDATE WHERE " +
-                OracleQuery.COL_UID + " = ?";
+                OracleQuery.COL_USER_ID + " = ?";
 
         try (Connection conn = DBconn.connectDB()) {
             conn.setAutoCommit(false);
             try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)) {
-                pstmt.setString(1, member.getUserName());
-
-                // 비밀번호 해시화
-                String hashedPassword = PwHash.hashPassword(member.getUserPw());
-                pstmt.setString(2, hashedPassword); // 해시된 비밀번호 설정
-
-                pstmt.setString(3, member.getUserEmail());
-                pstmt.setString(4, member.getUid());
+                pstmt.setString(1, member.getUserPw());  // 비밀번호 해시된 값 사용
+                pstmt.setString(2, member.getUserEmail());
+                pstmt.setString(3, member.getUserId());
                 int pstmtResult = pstmt.executeUpdate();
                 conn.commit();
                 return pstmtResult > 0; 
@@ -84,6 +78,7 @@ public class MemberDAOImpl implements MemberDAO {
             return false;
         }
     } // End updateMember
+
 
     
     @Override
@@ -146,5 +141,7 @@ public class MemberDAOImpl implements MemberDAO {
         }
         return false; 
     } // End isUserEmailExists
+    
+    
 }
 

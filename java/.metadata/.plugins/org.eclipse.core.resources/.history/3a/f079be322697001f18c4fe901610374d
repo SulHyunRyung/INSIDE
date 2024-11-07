@@ -1,7 +1,0 @@
-package model;
-
-import dao.MemberDAO;
-
-public class MemberDAOImple implements MemberDAO {
-
-}

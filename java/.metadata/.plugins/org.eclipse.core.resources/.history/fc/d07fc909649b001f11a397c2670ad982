@@ -1,0 +1,93 @@
+package gui;
+
+import javax.swing.*;
+import model.Comment;
+import model.Post;
+import dao.CommentDAO;
+import dao.CommentDAOImpl; // 오타 수정: CommnetDAOImpl -> CommentDAOImpl
+import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+public class PostViewFrameEx extends JDialog {
+    private static final long serialVersionUID = 1L;
+    private Post post;
+
+    public PostViewFrameEx(Post post) {
+        super((Frame) null, "게시물 보기", true);
+        this.post = post;
+
+
+        // 기본 설정
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false); // 크기 조절 불가능 설정
+
+        // 메인 패널 생성
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // 상단 패널
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setPreferredSize(new Dimension(600, 100));
+
+        // 로고 이미지
+        ImageIcon logoIcon = new ImageIcon("../../img/logo.png");
+        Image img = logoIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        JLabel logoLabel = new JLabel(new ImageIcon(img));
+
+        // 게시물 제목 레이블
+        JLabel titleLabel = new JLabel(post.getPostTitle());
+        titleLabel.setFont(new Font("굴림", Font.BOLD, 24));
+
+        // 작성자, 작성일자, 수정일자 레이블
+        JLabel authorLabel = new JLabel("작성자 : " + post.getpUserId());
+        authorLabel.setFont(new Font("굴림", Font.PLAIN, 12));
+
+        // 날짜 포맷 설정
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        JLabel createDateLabel = new JLabel("작성일자 : " + dateFormat.format(post.getCreateDate()));
+        createDateLabel.setFont(new Font("굴림", Font.PLAIN, 12));
+        JLabel updateDateLabel = new JLabel("수정일자 : " + dateFormat.format(post.getUpdateDate()));
+        updateDateLabel.setFont(new Font("굴림", Font.PLAIN, 12));
+
+        // 오른쪽 패널 (작성자, 작성일자, 수정일자)
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.add(authorLabel);
+        rightPanel.add(createDateLabel);
+        rightPanel.add(updateDateLabel);
+
+        // 로고와 제목 사이에 간격 추가
+        JPanel logoTitlePanel = new JPanel();
+        logoTitlePanel.setLayout(new BoxLayout(logoTitlePanel, BoxLayout.X_AXIS));
+        logoTitlePanel.add(logoLabel);
+        logoTitlePanel.add(Box.createRigidArea(new Dimension(80, 0))); // 50px 간격
+        logoTitlePanel.add(titleLabel);
+
+        // 패널에 추가
+        topPanel.add(logoTitlePanel, BorderLayout.WEST);
+        topPanel.add(rightPanel, BorderLayout.EAST);
+
+        mainPanel.add(topPanel, BorderLayout.NORTH);
+
+        // 본문 내용
+        JTextArea contentArea = new JTextArea(post.getContents());
+        contentArea.setFont(new Font("굴림", Font.PLAIN, 14));
+        contentArea.setLineWrap(true);
+        contentArea.setWrapStyleWord(true);
+        contentArea.setEditable(false); // 본문 내용은 편집할 수 없도록 설정
+        JScrollPane contentScrollPane = new JScrollPane(contentArea);
+        contentScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        contentScrollPane.setPreferredSize(new Dimension(580, 200));
+
+        mainPanel.add(contentScrollPane, BorderLayout.CENTER);
+
+
+        // 창 설정
+        setContentPane(mainPanel);
+        pack();
+        setVisible(true);
+    }
+}

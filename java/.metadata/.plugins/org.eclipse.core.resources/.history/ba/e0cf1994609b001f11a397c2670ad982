@@ -1,0 +1,14 @@
+// main.java
+package main;
+
+import gui.LoginFrame;
+import gui.PostViewFrame;
+import model.Post;
+
+import java.util.Date;
+
+public class Main {
+    public static void main(String[] args) {
+    	LoginFrame();
+    }
+}

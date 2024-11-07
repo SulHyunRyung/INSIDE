@@ -1,0 +1,131 @@
+package gui;
+
+import model.Member;
+import dao.MemberDAOImpl;
+import util.PwHash;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class UserInfoUpdate extends JDialog {
+    private static final long serialVersionUID = 1L;
+    private JTextField nameField;
+    private JTextField idField;
+    private JPasswordField newPasswordField;
+    private JPasswordField confirmPasswordField;
+    private JTextField emailField;
+
+    public UserInfoUpdate(JFrame parent, Member member) {
+        super(parent, "회원 정보 수정", true);
+        setSize(350, 300);
+        setLayout(new GridBagLayout());
+        setLocationRelativeTo(parent);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        JLabel nameLabel = new JLabel("이름:");
+        nameField = new JTextField(member.getUserName(), 15);
+        nameField.setEditable(false);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(nameLabel, gbc);
+        gbc.gridx = 1;
+        add(nameField, gbc);
+
+        JLabel idLabel = new JLabel("ID:");
+        idField = new JTextField(member.getUserId(), 15);
+        idField.setEditable(false);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(idLabel, gbc);
+        gbc.gridx = 1;
+        add(idField, gbc);
+
+        JLabel newPasswordLabel = new JLabel("새 비밀번호:");
+        newPasswordField = new JPasswordField(15);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        add(newPasswordLabel, gbc);
+        gbc.gridx = 1;
+        add(newPasswordField, gbc);
+
+        JLabel confirmPasswordLabel = new JLabel("새 비밀번호 확인:");
+        confirmPasswordField = new JPasswordField(15);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        add(confirmPasswordLabel, gbc);
+        gbc.gridx = 1;
+        add(confirmPasswordField, gbc);
+
+        JLabel emailLabel = new JLabel("EMAIL:");
+        emailField = new JTextField(member.getUserEmail(), 15);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        add(emailLabel, gbc);
+        gbc.gridx = 1;
+        add(emailField, gbc);
+
+        JLabel infoLabel = new JLabel("비밀번호는 변경 시에만 입력해주세요.");
+        infoLabel.setForeground(Color.GRAY);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(infoLabel, gbc);
+
+        JButton updateButton = new JButton("회원 정보 수정");
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String newPassword = new String(newPasswordField.getPassword());
+                String confirmPassword = new String(confirmPasswordField.getPassword());
+                String newEmail = emailField.getText().trim();
+
+                if (!newPassword.isEmpty() || !confirmPassword.isEmpty()) {
+                    if (!newPassword.equals(confirmPassword)) {
+                        JOptionPane.showMessageDialog(UserInfoUpdate.this, "비밀번호가 일치하지 않습니다.", "오류", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    if (PwHash.checkPassword(newPassword, member.getUserPw())) {
+                        JOptionPane.showMessageDialog(UserInfoUpdate.this, "새로운 비밀번호는 기존 비밀번호와 다르게 설정해 주세요.", "오류", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    member.setUserPw(PwHash.hashPassword(newPassword));
+                }
+
+                if (!newEmail.isEmpty() && !newEmail.equals(member.getUserEmail())) {
+                    MemberDAOImpl memberDAO = new MemberDAOImpl();
+
+                    if (memberDAO.isUserEmailExists(newEmail)) {
+                        JOptionPane.showMessageDialog(UserInfoUpdate.this, "이미 사용 중인 이메일입니다.", "오류", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    member.setUserEmail(newEmail);
+                }
+
+                member.setUserName(nameField.getText());
+
+                MemberDAOImpl memberDAO = new MemberDAOImpl();
+                boolean isUpdated = memberDAO.updateMember(member);
+
+                if (isUpdated) {
+                    JOptionPane.showMessageDialog(UserInfoUpdate.this, "회원 정보가 성공적으로 수정되었습니다.", "확인", JOptionPane.INFORMATION_MESSAGE);
+                    ((MainFrame) parent).updateMember(member);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(UserInfoUpdate.this, "회원 정보 수정에 실패했습니다.", "오류", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        gbc.gridy = 6;
+        add(updateButton, gbc);
+    }
+}
+

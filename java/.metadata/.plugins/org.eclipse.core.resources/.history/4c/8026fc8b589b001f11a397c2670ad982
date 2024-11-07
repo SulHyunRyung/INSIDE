@@ -1,0 +1,15 @@
+package main;
+
+import gui.LoginFrame;
+
+public class Main {
+	public static void main(String[] args) {
+        Post testPost = new Post();
+        testPost.setPostTitle("테스트 게시물 제목");
+        testPost.setContents("여기는 테스트 게시물의 본문 내용입니다. 내용이 잘 표시되는지 확인합니다.");
+        testPost.setpUserId("user123"); // 게시물 작성자 ID
+
+        // PostViewFrame 열기
+        new PostViewFrame(testPost);
+	}
+}
