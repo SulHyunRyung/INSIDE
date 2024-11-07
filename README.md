@@ -23,6 +23,7 @@
 ![RegFrame](https://github.com/user-attachments/assets/4cddf075-e132-4965-8c0e-8e4b30b6bae3)
 
 * 회원 가입 버튼 클릭시 표시되는 창.
+* 각 필드는 데이터 타입의 길이에 따라 글자 수 제한이 걸려있음.
   
 ![RegFrameIdNullChk](https://github.com/user-attachments/assets/70137168-0115-4471-8bce-64568012d122)
 
