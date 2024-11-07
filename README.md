@@ -43,7 +43,7 @@
 * 정상적으로 회원 가입이 완료 될 경우 입력한 정보로 DB ->
 * MEMBER_LIST 테이블에 정보가 들어가고 있는 것을 확인 및 비밀번호 암호화까지 확인.
 
-## [ MainFrame ] - 게시판 화면의 경우 추후 추가 후 수정 예정.
+## [ MainFrame ]
 
 ![MainFrame](https://github.com/user-attachments/assets/6fe4fe08-e1f9-4781-8fcb-c3f2d21a695f)
 * 로그인 시 처음으로 출력되는 MainFrame 창.
@@ -57,13 +57,16 @@
 
 ![MainFrameUserInfoUpdate](https://github.com/user-attachments/assets/bef0d579-fc1a-4732-ad7f-dc75bb5115a6)
 * 회원 정보 수정 버튼을 누를 경우, 정보 수정 창으로 이동 전 사용자의 ID와 PW를 확인하는 창 출력.
-
+*------폐기
+  
 ![MainFrameUserInfoUpdateChkFail](https://github.com/user-attachments/assets/2bad021c-1b7c-4b20-ac56-d4c5433f4ac3)
 * 해당 창에서도 ID, PW의 인증에 실패하면 경고 문구가 출력되도록 설정.
+* ------폐기
 
 ![MainFrameUserInfoUpdateChkSucsess](https://github.com/user-attachments/assets/d209d790-a33d-4f19-8839-dfa9d477d780)
 * ID, PW 인증 성공 시 성공 알림 출력 후 회원 정보 수정 창으로 이동함.
-
+* ------폐기
+  
 ## [ UserInfoUpdate ]
 
 ![UserInfoUpdateFrame](https://github.com/user-attachments/assets/bc5b7c14-e479-4a55-9def-6295b1a5c6d3)
