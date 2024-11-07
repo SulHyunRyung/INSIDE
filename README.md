@@ -21,9 +21,11 @@
 ## [ RegFrame ]
 
 ![RegFrame](https://github.com/user-attachments/assets/4cddf075-e132-4965-8c0e-8e4b30b6bae3)
+![RegFrameLengthOverTry](https://github.com/user-attachments/assets/b4116603-82d7-4ced-8073-dd42f8ee1183)
+
 
 * 회원 가입 버튼 클릭시 표시되는 창.
-* 각 필드는 데이터 타입의 길이에 따라 글자 수 제한이 걸려있음.
+* 각 필드는 데이터 타입의 길이에 따라 글자 수 제한이 걸려있음. (필드 자체에도 제한이 걸려있고, 사용자가 이단으로 옆구리를 틀어서 시도해도 가입 버튼을 누르면 짤립니다.)
   
 ![RegFrameIdNullChk](https://github.com/user-attachments/assets/70137168-0115-4471-8bce-64568012d122)
 
