@@ -1,9 +1,6 @@
 # INSIDE 
 * [SRS](https://github.com/SulHyunRyung/INSIDE/blob/main/referance/SRS.txt)
 
-* Test Name : TesterGit_1
-* Test ID : tester1
-* Test PW : p123
 
 ## [ LoginFrame ]
 
@@ -14,6 +11,12 @@
 ![LoginFrameError](https://github.com/user-attachments/assets/06bc96dd-a04a-412f-b3c3-68856a1e255c)
 
 * MEMBER_LIST 테이블의 USER_ID, USER_PW와 일치하지 않을 시 해당 경고 문구 출력.
+  
+![LoginFrameTryQuit](https://github.com/user-attachments/assets/8b854629-3002-4284-af97-7806cee4338b)
+
+* ID, PW 입력 중 ESC 키를 누르면 종료를 실행, 종료 안내 메세지를 출력.
+
+  
 
 ## [ RegFrame ]
 
