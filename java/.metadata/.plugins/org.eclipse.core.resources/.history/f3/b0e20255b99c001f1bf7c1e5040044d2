@@ -37,7 +37,7 @@ public class RegFrame extends JFrame {
         emailField = new JTextField();
 
         // 각 필드 글자 수 제한
-        userNameField.setDocument(new JTextFieldLimit(30));
+        userNameField.setDocument(new JTextFieldLimit(25));
         userIdField.setDocument(new JTextFieldLimit(20));
         passwordField.setDocument(new JTextFieldLimit(60));
         emailField.setDocument(new JTextFieldLimit(50));
